@@ -2,6 +2,14 @@ github.com/Oudwins/tailwind-merge-go v0.2.0 h1:rtVHgYmLwwae4P+K6//ceRuUdyz3Bny6f
 github.com/Oudwins/tailwind-merge-go v0.2.0/go.mod h1:kkZodgOPvZQ8f7SIrlWkG/w1g9JTbtnptnePIh3V72U=
 github.com/a-h/templ v0.2.793 h1:Io+/ocnfGWYO4VHdR0zBbf39PQlnzVCVVD+wEEs6/qY=
 github.com/a-h/templ v0.2.793/go.mod h1:lq48JXoUvuQrU0VThrK31yFwdRjTCnIE5bcPCM9IP1w=
+github.com/bartalcorn/goweb v0.1.0 h1:70AMFXIdEjZ7pEyi0UG1tNV1tWHh2wsjS8z7GaTzrAo=
+github.com/bartalcorn/goweb v0.1.0/go.mod h1:mSpCj+IpyIGvyun89wXiniqYmx2N77HzJ+CQCoAUnSU=
+github.com/bartalcorn/lucide v0.1.2 h1:bNYdeMPf6RDFSgVZ4eFuNRtQwP/kIaS4lP51ZEuJXCA=
+github.com/bartalcorn/lucide v0.1.2/go.mod h1:jUWeIbXwWYrVoWf41mH9MqKZ0P0+azNt3aiw6wOoulA=
+github.com/bartalcorn/nanoid v0.1.0 h1:v0SZKQX0AigISLpcUFgZLU788YWOtvrs8yK/zk/h0Lo=
+github.com/bartalcorn/nanoid v0.1.0/go.mod h1:O6roX8mIAcV+NG2rnHqW86T3lTPyKWlZu6yjaijKWcQ=
+github.com/bartalcorn/weather v0.1.3 h1:ijebkcvxbs0KGiAIQy8iphDDZLHezph+Y/9u3kl32UU=
+github.com/bartalcorn/weather v0.1.3/go.mod h1:9lWuE91vIZEwA0oQ7TdT+nGxLAdr1CFzBstwXzjrfGQ=
 github.com/briandowns/openweathermap v0.21.0 h1:KFQgH6/BwgznWyqv5bhxdf7uPJGEhHeY1VW2Uo3jDI4=
 github.com/briandowns/openweathermap v0.21.0/go.mod h1:0GLnknqicWxXnGi1IqoOaZIw+kIe5hkt+YM5WY3j8+0=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
