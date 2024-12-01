@@ -1,0 +1,39 @@
+package toggle
+
+import "github.com/bartalcorn/gothat/pkg/components/typography"
+
+templ Showcase() {
+	@typography.Header(&typography.Props{
+		Title: "Component: Toggle",
+		Class: "w-full border-b border-gray-600",
+	})
+	<div class="flex flex-col gap-4 p-4">
+		<div class="flex flex-col space-y-2">
+			@typography.Label("Small")
+			@Toggle(&Props{
+				LabelLeft:  "on the left",
+				LabelRight: "on the right",
+				Size:       Sm,
+				Checked:    true,
+			})
+		</div>
+		<div class="flex flex-col space-y-2">
+			@typography.Label("Medium")
+			@Toggle(&Props{
+				LabelLeft:  "on the left",
+				LabelRight: "on the right",
+				Size:       Md,
+				Checked:    false,
+			})
+		</div>
+		<div class="flex flex-col space-y-2">
+			@typography.Label("Large")
+			@Toggle(&Props{
+				LabelLeft:  "on the left",
+				LabelRight: "on the right",
+				Size:       Lg,
+				Checked:    true,
+			})
+		</div>
+	</div>
+}

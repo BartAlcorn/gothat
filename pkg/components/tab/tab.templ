@@ -1,0 +1,67 @@
+package tab
+
+// Tab represents a single tab in the Tabs component.
+type Tab struct {
+	// ID is the unique identifier for the tab.
+	ID string
+
+	// Title is the text displayed on the tab button.
+	Title string
+
+	// Content is the templ.Component to be rendered when the tab is active.
+	Content templ.Component
+}
+
+// Props defines the properties for the Tabs component.
+type Props struct {
+	// Tabs is an array of Tab structs representing each tab in the component.
+	Tabs []Tab
+
+	// DefaultIndex - the zero based index of the tab auto-selected
+	// default: "0" means the first, left most tab
+	DefaultIndex string
+
+	// TabsContainerClass specifies additional CSS classes for the tabs container.
+	// Default: "" (empty string)
+	TabsContainerClass string
+
+	// ContentContainerClass specifies additional CSS classes for the content container.
+	// Default: "" (empty string)
+	ContentContainerClass string
+
+	// Class additonal css / tailwind classes
+	Class string
+}
+
+// Tabs renders a tabbed interface component based on the provided props.
+// It uses Alpine.js for interactivity and local state management.
+templ Tabs(props *Props) {
+	<div
+		x-data
+		x-tabs
+		class="max-w-3xl"
+		if props.DefaultIndex !="" {
+			default-index={ props.DefaultIndex }
+		}
+	>
+		<div x-tabs:list class="flex items-stretch border-b border-zinc-300">
+			for _, tab := range props.Tabs {
+				<button
+					x-tabs:tab
+					type="button"
+					class="h-min px-4 py-2 text-sm no-ring"
+					:class="$tab.isSelected ? 'font-bold text-blue-500 border-b-2 border-b-blue-500' : 'text-neutral-600 font-medium hover:border-b-2 hover:border-b-blue-800 hover:text-neutral-900'"
+				>{ tab.Title }</button>
+			}
+		</div>
+		<div x-tabs:panels class="bg-white">
+			for _, tab := range props.Tabs {
+				<section x-tabs:panel class="p-8">
+					<p class="mt-2 text-gray-500">
+						@tab.Content
+					</p>
+				</section>
+			}
+		</div>
+	</div>
+}

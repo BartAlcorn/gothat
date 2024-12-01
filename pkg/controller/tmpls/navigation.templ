@@ -1,0 +1,47 @@
+package tmpls
+
+import (
+	"github.com/bartalcorn/gothat/pkg/components/menu"
+	"github.com/bartalcorn/gothat/pkg/htmx"
+)
+
+templ Navigation(module string, oob bool) {
+	<div
+		id="navigation"
+		if oob {
+			hx-swap-oob="true"
+		}
+	>
+		@menu.Menu(&menu.Props{
+			Trigger: trigger(module),
+			Items: []*menu.ItemProps{
+				{Label: "Home", HX: htmx.Props{
+					Get:     "/",
+					Trigger: "click",
+					Target:  "#main-section",
+					PushUrl: "/",
+				}},
+				{Label: "Showcase", HX: htmx.Props{
+					Get:     "/showcase/",
+					Trigger: "click",
+					Target:  "#main-section",
+					PushUrl: "/showcase/",
+				}},
+				{Label: "Weather", HX: htmx.Props{
+					Get:     "/weather/",
+					Trigger: "click",
+					Target:  "#main-section",
+					PushUrl: "/weather/",
+				}},
+			},
+			Placement: "right",
+		})
+	</div>
+}
+
+templ trigger(module string) {
+	<span>{ module }</span>
+}
+
+templ panel() {
+}

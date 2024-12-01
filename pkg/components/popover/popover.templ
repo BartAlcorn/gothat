@@ -1,0 +1,83 @@
+package popover
+
+import (
+	"github.com/bartalcorn/nanoid"
+	"strings"
+)
+
+type Props struct {
+	// ID - if not supplied, random will be generated
+	ID string `default:""`
+
+	// if present, and TriggerContent is nil,
+	// will display as the button Label of the
+	// default styled trigger button
+	TriggerLabel string `default:"click"`
+
+	// any templ.Component
+	TriggerContent templ.Component
+
+	//
+	PopOverContent templ.Component
+
+	// placement relative to trigger
+	// top, top-start, top-end
+	// left, left-start, left-end
+	// right, right-start, right-end
+	// bottom, bottom-start, bottom-end
+	Placement string `default:"top"`
+
+	// On - click, hover
+	On string `default:"click"`
+
+	// if On is set to 'click', then away being true will close
+	// the popover display on any click not ON the display.
+	Away bool
+}
+
+func (p *Props) ref() string {
+	if p.ID != "" {
+		return "popover-" + p.ID
+	}
+	return "popover-" + nanoid.WebSafeID()
+}
+
+func (p *Props) anchor() templ.Attributes {
+	if strings.Contains(p.Placement, ".") {
+		p.Placement = strings.ReplaceAll(p.Placement, ".", "")
+	}
+	if p.Placement == "" {
+		p.Placement = "top"
+	}
+
+	return templ.Attributes{"x-anchor." + p.Placement + ".offset.4": "$refs.popover"}
+}
+
+templ Popover(props *Props) {
+	<div x-data="{ __isOpen: false }">
+		<button
+			x-ref="popover"
+			if props.On == "" || props.On == "click" {
+				@click="__isOpen = ! __isOpen"
+			}
+			if props.On == "hover" {
+				@mouseenter="__isOpen = true"
+				@mouseleave="__isOpen = false"
+			}
+			class="relative got-component"
+		>
+			@props.TriggerContent
+		</button>
+		<div
+			x-cloak
+			x-show="__isOpen"
+			{ props.anchor()... }
+			if (props.On == "" || props.On == "click") && props.Away {
+				@click.away="__isOpen = false"
+			}
+			class="relative min-w-fit max-w-16 text-center rounded-lg shadow-sm z-10 bg-white p-1.5 outline-none border border-gray-200"
+		>
+			@props.PopOverContent
+		</div>
+	</div>
+}

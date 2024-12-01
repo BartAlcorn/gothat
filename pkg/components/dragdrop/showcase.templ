@@ -1,0 +1,97 @@
+package dragdrop
+
+import (
+	"fmt"
+	"github.com/bartalcorn/gothat/pkg/components/typography"
+	"github.com/bartalcorn/gothat/pkg/tws"
+	"github.com/bartalcorn/lucide"
+)
+
+func items1() []templ.Component {
+	var items []templ.Component
+	items = append(items, userPill("", "Barbara Gordon", "b.gordon@gotham-pd.gov"))
+	items = append(items, userPill("", "Lois Lane", "lois.lane@dailyplanet.com"))
+	items = append(items, userPill("", "Steve Trevor", "strevors.@united-nations.gov"))
+	items = append(items, userPill("", "Arthur Curry", "acurry@gotham-aquarium.org"))
+	return items
+}
+
+func items2() []templ.Component {
+	var items []templ.Component
+	items = append(items, userPill("", "Barry Allen", "b.allen@centralcitypolice.com"))
+	items = append(items, userPill("", "Victor Stone", "stone-werks.com"))
+	return items
+}
+
+templ Showcase() {
+	@typography.Header(&typography.Props{
+		Title: "Component: Drag=and-Drop",
+		Class: "w-full border-b border-gray-400",
+	})
+	<section class="flex flex-col gap-2">
+		<div
+			x-data="{
+			droptarget: '',
+			dropitem: '',
+			newposition: '',
+			onMove(e) {
+				this.droptarget=e.detail.$el.id
+				this.dropitem=e.detail.$item
+				this.newposition=e.detail.$position
+			}
+		}"
+			@spl-drop.document="onMove($event);"
+		>
+			<div class={ tws.FlexRow, "w-full" }>
+				<div class="relative overflow-y-hidden border border-neutral-200 rounded-md w-1/2">
+					<h3 class="py-2 px-3 bg-neutral-200">This</h3>
+					@List(&Props{ID: "demo-this", Name: "demo-this", Group: "demousers", Items: items1()})
+				</div>
+				<div class="p-4 items-center">⇄</div>
+				<div class="relative overflow-y-hidden border border-neutral-200 rounded-md w-1/2">
+					<h3 class="py-2 px-3 bg-neutral-200">That</h3>
+					@List(&Props{ID: "demo-that", Name: "demo-that", Group: "demousers", Items: items2()})
+				</div>
+			</div>
+			<div class="flex flex-col gap-2 mt-4">
+				<div>Drop Target: <span class="font-bold" x-text="droptarget"></span></div>
+				<div>Dropped Item: <span class="font-bold" x-text="dropitem"></span></div>
+				<div>New Position: <span class="font-bold" x-text="newposition"></span></div>
+			</div>
+		</div>
+	</section>
+}
+
+templ demoUser(id string, name string, email string) {
+	<li
+		x-sort:item={ fmt.Sprintf("'%s'", id) }
+		class="flex flex-row gap-4 mb-1 w-full items-center justify-start bg-zinc-50 border border-gray-600 rounded-md p-0.5 pl-4 hover:bg-blue-100 hover:border-blue-400 hover:text-blue-800"
+	>
+		<div class="aspect-square h-full items-center justify-center -p-2">
+			@lucide.User(lucide.Props{Class: "text-gray-100"})
+		</div>
+		<div class="flex flex-col gap-1">
+			{ name }
+			<div class="-mt-2">
+				@typography.Label(email)
+			</div>
+		</div>
+	</li>
+}
+
+templ userPill(id string, name string, email string) {
+	<li
+		x-sort:item={ fmt.Sprintf("'%s'", id) }
+		class="flex flex-row gap-4 mb-1 w-full items-center justify-start bg-zinc-50 border border-gray-600 rounded-md p-0.5 pl-4 hover:bg-blue-100 hover:border-blue-400 hover:text-blue-800"
+	>
+		<div class="aspect-square h-full items-center justify-center -p-2">
+			@lucide.User(lucide.Props{Class: "text-gray-100"})
+		</div>
+		<div class="flex flex-col gap-1">
+			{ name }
+			<div class="-mt-2">
+				@typography.Label(email)
+			</div>
+		</div>
+	</li>
+}

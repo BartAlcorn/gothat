@@ -1,0 +1,39 @@
+package tmpls
+
+import (
+	"fmt"
+	"github.com/bartalcorn/gothat/pkg/embedded"
+	"time"
+)
+
+templ Base(props *Props) {
+	<!DOCTYPE html>
+	<html data-theme="light" lang="en">
+		<head>
+			{{ section := "" }}
+			for _, scrpt := range embedded.Scripts {
+				if section != scrpt.Folder {
+					@templ.Raw(folder(scrpt.Folder))
+					{{ section = scrpt.Folder }}
+				}
+				<script defer="true" type="text/javascript" src={ fmt.Sprintf("/assets/js/%s/%s", scrpt.Folder, scrpt.Name) } crossorigin="anonymous"></script>
+			}
+			<!-- StyleSheets -->
+			<link rel="stylesheet" type="text/css" href={ "/assets/css/styles.css?v=" + fmt.Sprintf("%d", time.Now().UnixMilli()) }/>
+		</head>
+		<body class="bg-white">
+			if props.Content != nil {
+				@props.Content
+			}
+			if props.Contents != nil {
+				for _, c := range props.Contents {
+					@c
+				}
+			}
+		</body>
+	</html>
+}
+
+func folder(folder string) string {
+	return fmt.Sprintf("<!-- %s  -->", folder)
+}

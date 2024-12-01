@@ -1,0 +1,22 @@
+package dropdown
+
+import (
+	"github.com/bartalcorn/gothat/pkg/components/button"
+	"github.com/bartalcorn/gothat/pkg/components/typography"
+)
+
+templ Showcase() {
+	@typography.Header(&typography.Props{
+		Title: "Component: Dialog",
+		Class: "w-full border-b border-gray-400",
+	})
+	<div class="flex flex-col gap-4 justify-start mt-4">
+		@Dropdown(&Props{Label: "Example Modal"}) {
+			<div class="p-4">Content goes here.</div>
+		}
+		@Dropdown(&Props{
+			Trigger: button.Button(&button.Props{Label: "button trigger"}),
+			Panel:   templ.Raw(`<div class="p-4">Content goes here.</div>`),
+		})
+	</div>
+}

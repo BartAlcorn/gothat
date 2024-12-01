@@ -1,0 +1,27 @@
+package checkbox
+
+import "github.com/bartalcorn/gothat/pkg/components/typography"
+
+templ Showcase() {
+	@typography.Header(&typography.Props{
+		Title: "Component: Checkbox",
+		Class: "w-full border-b border-gray-400",
+	})
+	<section class="flex flex-col gap-4 p-4">
+		@Checkbox2(&Props{
+			Name:  "test1",
+			Label: "example, not checked by default",
+		})
+		@Checkbox2(&Props{
+			Name:      "test2",
+			Label:     "right label, checked by default",
+			LabelLeft: "left label",
+			Checked:   true,
+		})
+		@Checkbox2(&Props{
+			Name:      "test3",
+			LabelLeft: "left label only",
+			Checked:   false,
+		})
+	</section>
+}

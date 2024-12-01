@@ -1,0 +1,74 @@
+package list
+
+type ListManagerBoson struct {
+	Name  string
+	HxGet string
+}
+
+script listXdata() {
+	document.addEventListener("alpine:init", () => {
+		Alpine.data("listXdata", () => {
+      return {
+        selectedId: null,
+        select(id) {
+          this.selectedId = id
+        },
+        isSelected(id) {
+            return this.selectedId === id
+        },
+        selectNext() {
+          let selectd = document.getElementById(this.selectedId)
+          if (selectd === null) return
+          if (selectd.nextSibling === null) return
+          this.selectedId = selectd.nextSibling.id
+          selectd = selectd.nextSibling
+          selectd.click()
+          selectd.scrollIntoView({block: 'center'})
+        },
+        selectPrev() {
+          let selectd = document.getElementById(this.selectedId)
+          if (selectd === null) return
+          if (selectd.previousSibling === null) return
+          this.selectedId = selectd.previousSibling.id
+          selectd = selectd.previousSibling
+          selectd.click()
+          selectd.scrollIntoView({block: 'center'})
+        }
+      }
+    })
+  })
+}
+
+// ListContainer is a flex wrapper around a ListManager to provide the stretch to fill the parent component
+templ ListContainer() {
+	<div class="flex flex-col flex-1 min-h-0 border border-gray-600 rounded-md mt-2">
+		{ children... }
+	</div>
+}
+
+templ ListManager(id string) {
+	@listXdata()
+	<div
+		id={ id + "-list" }
+		x-data="listXdata()"
+		x-ref="list"
+		@keydown.up.document.prevent.stop="selectPrev();"
+		@keydown.down.document.prevent.stop="selectNext();"
+		class="flex-grow-1 items-center overflow-y-auto pl-1 p-2 mb-1"
+		hx-target={ "#" + id + "-details" }
+		hx-trigger="click"
+	>
+		{ children... }
+	</div>
+}
+
+templ ListItem(id string, module string) {
+	<div
+		id={ id }
+		@click={ "select($el.id);$dispatch('spl-" + module + "-select', { id: $el.id })" }
+		class="flex flex-row gap-4 py-1 px-2 w-full items-center justify-between rounded-sm hover:text-blue-800 hover:bg-gray-600 transition-color"
+		:class="{ 'text-blue-500 bg-blue-50': isSelected($el.id) }"
+	>
+		{ children... }
+	</div>
+}

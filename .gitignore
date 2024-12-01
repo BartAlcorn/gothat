@@ -1,0 +1,8 @@
+.DS_Store
+.cspell
+.env
+*_templ.txt
+air.log
+/bin
+/tmp
+/node_modules

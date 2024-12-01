@@ -1,0 +1,84 @@
+package searchdrawer
+
+import (
+	"github.com/bartalcorn/gothat/pkg/components/alpinejs"
+	"github.com/bartalcorn/gothat/pkg/components/button"
+	"github.com/bartalcorn/gothat/pkg/components/checkbox"
+	"github.com/bartalcorn/gothat/pkg/components/tab"
+)
+
+templ SearchDrawer() {
+	<div
+		x-data={ `{
+			fetch: (ev) => {
+				htmx.ajax('GET', '/search2/adv/'+searchID, {
+					target: '#search-drawer-details',
+					swap: 'innerHTML',
+				})
+			}
+		}` }
+		x-show="isDrawerSearchOpen"
+		x-cloak
+		x-intersect="fetch"
+		{ alpinejs.TranslateTop... }
+		class="fixed top-0 origin-top overflow-y-auto w-[600px] h-3/4 z-20 pt-[68px] pb-5 px-5 bg-white border border-gray-600 shadow-lg focus:outline-none"
+		role="menu"
+		aria-orientation="vertical"
+		aria-labelledby="search-drawer"
+		tabindex="-1"
+		style="display: none;"
+		@click.away="isDrawerSearchOpen = false"
+		@keyup.f.ctrl.window.prevent="isDrawerSearchOpen = true"
+		@spl:search-initiated.document="fetch($event)"
+		@spl-search-open.document="isDrawerSearchOpen = true"
+	>
+		<section class="h-full w-full">
+			@tab.Tabs(&tab.Props{
+				Tabs: []tab.Tab{
+					{
+						ID:      "advanced",
+						Title:   "Advanced",
+						Content: advancedSearch(),
+					},
+					{
+						ID:      "savedsearch",
+						Title:   "Saved Searches ()",
+						Content: savedSearches(),
+					},
+				},
+			})
+		</section>
+	</div>
+}
+
+templ advancedSearch() {
+	<div class="flex flex-col object-fill overflow-hidden">
+		<div
+			id="search-drawer-details"
+			class="flex flex-col flex-1 overflow-y-auto w-full"
+		></div>
+		<div class="py-8">
+			@checkbox.Checkbox(&checkbox.Props{Label: "Yes, I would like to save my search"})
+		</div>
+		<div class="flex flex-row w-full pt-2 bottom-0 items-center justify-start">
+			@button.Button(&button.Props{
+				Label: "Search",
+			})
+			@button.Button(&button.Props{
+				Variant: button.Text,
+				Label:   "Cancel",
+			})
+			@button.Button(&button.Props{
+				Variant: button.Text,
+				Label:   "Clear",
+				Class:   "ml-4",
+			})
+		</div>
+	</div>
+}
+
+templ savedSearches() {
+	<section class="object-fill items-center justify-center">
+		Saved Searches
+	</section>
+}

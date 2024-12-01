@@ -1,0 +1,40 @@
+package radio
+
+import "github.com/bartalcorn/gothat/pkg/components/typography"
+
+templ Showcase() {
+	@typography.Header(&typography.Props{
+		Title: "Component: Radio",
+		Class: "w-full border-b border-gray-400",
+	})
+	<section
+		x-data={ `{
+     superhero: ''
+    }` }
+		class="flex flex-col w-1/3 gap-4 p-4"
+		@spl:change="superhero = $event.detail.value;"
+	>
+		@Radio(&Props{
+			ID:    "barman",
+			Group: "superHero",
+			Label: "Batman",
+		})
+		@Radio(&Props{
+			ID:    "flash",
+			Group: "superHero",
+			Label: "Flash",
+		})
+		@Radio(&Props{
+			ID:      "superman",
+			Group:   "superHero",
+			Label:   "Superman",
+			Checked: true,
+		})
+		@Radio(&Props{
+			ID:    "wonderwoman",
+			Group: "superHero",
+			Label: "WonderWoman",
+		})
+		<span x-show="superhero !== '' ">You selected: <span x-text="superhero" class="font-semibold"></span></span>
+	</section>
+}

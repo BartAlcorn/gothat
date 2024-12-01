@@ -1,0 +1,32 @@
+package disclosure
+
+import (
+	"github.com/bartalcorn/gothat/pkg/components/fullscreenmodal"
+	"github.com/bartalcorn/gothat/pkg/components/typography"
+)
+
+templ Showcase() {
+	@typography.Header(&typography.Props{
+		Title: "Component: Disclosure",
+		Class: "w-full border-b border-gray-400",
+	})
+	<div class="mt-4">
+		@Disclosure(&Props{
+			ID:    "showcase-disclosure",
+			Title: "Disclosure",
+			Open:  true,
+		}) {
+			<div>And now for something completely different.</div>
+			@fullscreenmodal.FullScreenModal(&fullscreenmodal.Props{
+				Label: "Full Screen Modal Preview",
+				Title: "Full Screen Modal"})
+		}
+		@Disclosure(&Props{
+			ID:    "showcase-disclosure",
+			Title: "How many can there be?",
+			Open:  false,
+		}) {
+			<div>There can be only one!</div>
+		}
+	</div>
+}

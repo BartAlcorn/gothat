@@ -1,0 +1,31 @@
+package section
+
+import "github.com/bartalcorn/gothat/pkg/tws"
+
+type Props struct {
+	Title        string
+	ContentLeft  templ.Component
+	ContentRight []templ.Component
+	Class        string
+}
+
+templ Header(props *Props) {
+	<div
+		class={ tws.TwMerge("h-[40px] w-full flex flex-row flex-nowrap items-center justify-between",
+		"bg-white border-b border-gray-300", props.Class) }
+	>
+		if props.ContentLeft != nil {
+			@props.ContentLeft
+		}
+		if props.Title != "" {
+			{ props.Title }
+		}
+		&nbsp;
+		{ children... }
+		if props.ContentRight != nil {
+			for _, cr := range props.ContentRight {
+				@cr
+			}
+		}
+	</div>
+}

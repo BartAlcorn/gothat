@@ -1,0 +1,48 @@
+package combobox
+
+import (
+	"github.com/bartalcorn/gothat/pkg/components/button"
+	"github.com/bartalcorn/gothat/pkg/components/typography"
+)
+
+var industries = []*Item{
+	{Key: "Agriculture", Value: "agriculture"},
+	{Key: "Construction", Value: "construction"},
+	{Key: "Education", Value: "education"},
+	{Key: "Entertainment", Value: "entertainment"},
+	{Key: "Finance", Value: "finance"},
+	{Key: "Healthcare", Value: "healthcare"},
+	{Key: "Hospitality", Value: "hospitality"},
+	{Key: "IT", Value: "it"},
+	{Key: "Manufacturing", Value: "manufacturing"},
+	{Key: "Marketing", Value: "marketing"},
+	{Key: "Real Estate", Value: "realestate"},
+	{Key: "Retail", Value: "retail"},
+	{Key: "Transportation", Value: "transportation"},
+}
+
+templ Showcase() {
+	@typography.Header(&typography.Props{
+		Title: "Component: Combobox Experimental",
+		Class: "w-full border-b border-gray-600",
+	})
+	<div class="mt-6 w-full h-full overflow-y-auto">
+		<div class="-mb-2 ml-5">
+			@typography.Label("Combobox: Pick an Industry")
+		</div>
+		<form>
+			@ComboBox(&Props{
+				ID:       "combobox-showcase",
+				Name:     "combobox-showcase",
+				Items:    industries,
+				Multiple: true,
+				By:       "value"})
+			@typography.Label("Combobox value(s):")
+			<span x-text="selected"></span>
+			@button.Button(&button.Props{
+				Label: "test",
+				Click: "console.log(document.getElementsByClassName('class_name')[combobox-showcase].value)",
+			})
+		</form>
+	</div>
+}

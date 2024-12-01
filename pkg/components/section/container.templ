@@ -1,0 +1,17 @@
+package section
+
+import "github.com/bartalcorn/gothat/pkg/tws"
+
+// Container will fill a parent element, and allow children to be scrollable
+templ Container(props *Props) {
+	<section class={ tws.TwMerge("flex-1 min-h-0 border", props.Class) }>
+		{ children... }
+	</section>
+}
+
+// Scrollable will fill a parent element, preferably a Container, and allow it's children to be scrollable
+templ Scrollable(props *Props) {
+	<section class={ tws.TwMerge("flex-grow-1 overflow-y-auto", props.Class) }>
+		{ children... }
+	</section>
+}

@@ -1,0 +1,64 @@
+package textarea
+
+import (
+	"github.com/bartalcorn/gothat/pkg/components/typography"
+	"github.com/bartalcorn/gothat/pkg/tws"
+)
+
+type Props struct {
+	// ID is the unique identifier for the input field.
+	// Default: "" (empty string)
+	ID string
+
+	// Name is the name attribute of the input field.
+	// Default: "" (empty string)
+	Name string
+
+	// Label will appear above the input if present.
+	// Default: "" (empty string)
+	Label string
+
+	// Type specifies the type of the input field.
+
+	// Placeholder is the placeholder text for the input field.
+	// Default: "" (empty string)
+	Placeholder string
+
+	// Value is the current value of the input field.
+	// Default: "" (empty string)
+	Value string
+
+	// Class specifies additional CSS classes to apply to the input field.
+	// Default: "" (empty string)
+	Class string
+
+	// Disabled can be either a bool or a string.
+	// If bool (Go), it directly controls the disabled state.
+	// If string, it's treated as a JavaScript expression for dynamic disabling.
+	// Default: nil
+	Disabled any
+
+	// Attrs allows passing additional HTML attributes to the input element.
+	// Default: nil
+	Attrs templ.Attributes
+}
+
+// TextArea
+// keyboard navigation within is alowed, but the keystroke are not allow to bubble
+templ TextArea(props *Props) {
+	<div class="w-full mx-auto">
+		if props.Label != "" {
+			@typography.Label(props.Label)
+		}
+		<textarea
+			id={ props.Name }
+			name={ props.Name }
+			placeholder={ props.Placeholder }
+			class={ tws.TwMerge("dsc-form-input", props.Class) }
+			@keydown.down.stop
+			@keydown.up.stop
+			@keydown.left.stop
+			@keydown.right.stop
+		>{ props.Value }</textarea>
+	</div>
+}

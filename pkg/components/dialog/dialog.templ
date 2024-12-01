@@ -1,0 +1,78 @@
+package dialog
+
+import (
+	"github.com/bartalcorn/gothat/pkg/components/button"
+	"github.com/bartalcorn/gothat/pkg/components/typography"
+	"github.com/bartalcorn/lucide"
+)
+
+type Props struct {
+	ID      string
+	Title   string
+	Trigger templ.Component
+	Content templ.Component
+}
+
+templ Dialog(props *Props) {
+	<div
+		id={ props.ID }
+		x-data="{ __isOpen: false }"
+		class="flex"
+	>
+		<!-- Trigger -->
+		<span @click="__isOpen = true">
+			if props.Trigger != nil {
+				@props.Trigger
+			} else {
+				if props.Title != "" {
+					{ props.Title }
+				} else {
+					Click
+				}
+			}
+		</span>
+		<!-- Modal -->
+		<div
+			x-dialog
+			x-model="__isOpen"
+			style="display: none"
+			class="fixed inset-0 overflow-y-auto z-10"
+		>
+			<!-- Overlay -->
+			<div x-dialog:overlay x-transition.opacity class="fixed inset-0 bg-black bg-opacity-50"></div>
+			<!-- Panel -->
+			<div
+				class="relative min-h-screen flex items-center justify-center -mt-20 p-4"
+			>
+				<div
+					x-dialog:panel
+					x-transition
+					class="relative max-w-max w-full bg-white rounded-md shadow-lg"
+				>
+					<!-- Titlebar -->
+					<section class="absolute top-0 left-0 pt-4 pl-4">
+						@typography.Header(&typography.Props{Title: props.Title})
+					</section>
+					<!-- Close Button -->
+					<div class="absolute top-0 right-0 pt-1 pr-1">
+						@button.Button(&button.Props{
+							Variant:  button.Icon,
+							Click:    "$dialog.close()",
+							IconLeft: lucide.SquareX(lucide.Props{}),
+							Attrs: templ.Attributes{
+								"@click.stop": "$dialog.close()",
+							},
+						})
+					</div>
+					<!-- Body -->
+					<section class="p-4 pt-6">
+						if props.Content != nil {
+							@props.Content
+						}
+						{ children... }
+					</section>
+				</div>
+			</div>
+		</div>
+	</div>
+}

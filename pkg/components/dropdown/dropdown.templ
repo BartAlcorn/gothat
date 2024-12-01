@@ -1,0 +1,62 @@
+package dropdown
+
+type Props struct {
+	// Label - the text on the trigger button
+	// default "Dropdown"
+	Label     string `default:"Dropdown"`
+	IconLeft  templ.Component
+	IconRight templ.Component
+
+	Trigger   templ.Component
+	Panel     templ.Component
+	Placement string
+}
+
+templ Dropdown(props *Props) {
+	<div x-data x-popover class="relative">
+		if props.Trigger != nil {
+			<div x-popover:button>
+				@props.Trigger
+			</div>
+		} else {
+			<button x-popover:button type="button" class="got-component">
+				if props.IconLeft != nil {
+					@props.IconLeft
+				}
+				if props.Label != "" {
+					{ props.Label }
+				} else {
+					<span>Dropdown</span>
+				}
+				if props.IconRight != nil {
+					@props.IconRight
+				}
+			</button>
+		}
+		<div
+			x-popover:panel
+			x-cloak
+			{ props.placementTransition()... }
+			class={ "absolute", props.placementClass(), "mt-2 z-10 max-w-fit bg-white rounded-md shadow-sm outline-none border border-gray-200" }
+		>
+			if props.Panel != nil {
+				@props.Panel
+			}
+			{ children... }
+		</div>
+	</div>
+}
+
+func (p *Props) placementTransition() templ.Attributes {
+	if p.Placement == "" || p.Placement == "left" {
+		return templ.Attributes{"x-transition.origin.top.left": true}
+	}
+	return templ.Attributes{"x-transition.origin.top.right": true}
+}
+
+func (p *Props) placementClass() string {
+	if p.Placement == "" || p.Placement == "left" {
+		return "left-0"
+	}
+	return "right-0"
+}

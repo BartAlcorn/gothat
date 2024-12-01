@@ -1,0 +1,122 @@
+package disclosure
+
+import (
+	"fmt"
+	"github.com/bartalcorn/lucide"
+)
+
+type Props struct {
+	// ID of the expandable
+	// default: ""
+	ID string
+
+	// Title, the main title on the header
+	// required
+	Title string
+
+	// Open default state of the expandable
+	// default: false
+	Open bool
+
+	// Class, additional css classes
+	// default: ""
+	Class string
+
+	// BoundClass
+	BoundClass string
+
+	// Content interior content, here or via children
+	// default: nil
+	Content templ.Component
+
+	// HeaderContent additional header content, e.g. toolbars
+	// default: nil
+	HeaderContent templ.Component
+
+	// LeftHeaderContent additional header content, displayed BEFORE the chevron
+	// default: nil
+	LeftHeaderContent templ.Component
+
+	// OuterPadding, padding inside the drawer, outside the content
+	// default: "p-4"
+	OuterPadding string
+}
+
+// isOpen return the string value of bool Open
+func (p *Props) isOpen() string {
+	return fmt.Sprintf("%t", p.Open)
+}
+
+// Padding results the supplied or default value for padding
+func (p *Props) Padding() string {
+	if p.OuterPadding != "" {
+		return p.OuterPadding
+	}
+	return " p-4"
+}
+
+templ Disclosure(props *Props) {
+	<div
+		if props.ID !="" {
+			id={ props.ID }
+		}
+		class={ "flex flex-col w-full" , props.Class }
+		x-data={ "{ isOpen: " + props.isOpen() + " }" }
+	>
+		<div x-disclosure x-model="isOpen">
+			<div
+				x-disclosure:button
+				class="flex flex-row items-center h-[40px] gap-2 p-2 w-full hover:bg-gray-100 transition-colors"
+				if props.BoundClass !="" {
+					:class={ props.BoundClass }
+				}
+			>
+				if props.LeftHeaderContent != nil {
+					@props.LeftHeaderContent
+				}
+				<div></div>
+				<div
+					class="duration-300 "
+					:class="$disclosure.isOpen ? 'rotate-90 duration-300 text-blue-500' : 'text-gray-header'"
+				>
+					@lucide.ChevronRight(lucide.Props{})
+				</div>
+				@Header(props)
+			</div>
+			<div
+				x-disclosure:panel
+				x-collapse
+				if props.BoundClass !="" {
+					:class={ props.BoundClass }
+				}
+				if props.LeftHeaderContent != nil {
+					class="pl-8"
+				}
+			>
+				<div class={ props.Padding() }>
+					{ children... }
+					if props.Content != nil {
+						@props.Content
+					}
+				</div>
+			</div>
+		</div>
+	</div>
+}
+
+templ Header(props *Props) {
+	<div class="w-full flex flex-row flex-nowrap items-center justify-between">
+		<span
+			class="text-base"
+			:class="$disclosure.isOpen ? 'text-blue-500 font-semibold' : 'text-gray-header'"
+		>
+			{ props.Title }
+			if props.ID != "" {
+				<span id={ props.ID + "-count" }></span>
+			}
+		</span>
+		if props.HeaderContent != nil {
+			@props.HeaderContent
+		}
+	</div>
+}

@@ -1,0 +1,20 @@
+package modal
+
+import "github.com/bartalcorn/gothat/pkg/components/typography"
+
+templ Showcase() {
+	@typography.Header(&typography.Props{
+		Title: "Component: Modal",
+		Class: "w-full border-b border-gray-400",
+	})
+	<div
+		x-data={ `{
+      selected: '',
+    }` }
+		class="mt-4"
+	>
+		@Modal(&Props{Title: "Example Modal"}) {
+			<div class="p-4">Content goes here.</div>
+		}
+	</div>
+}

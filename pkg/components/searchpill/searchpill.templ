@@ -1,0 +1,45 @@
+package searchpill
+
+import (
+	"fmt"
+	"github.com/bartalcorn/gothat/pkg/icons/animated"
+)
+
+type Props struct {
+	Label     string // The Name of the Saved Search
+	Count     string // The Count
+	SearchID  string // The ID of the Saved Search
+	SearchURL string // The url of the Saved Search call
+}
+
+templ SearchPill(props *Props) {
+	<div
+		x-data={ `{
+			id: '`+props.SearchID+`',
+			rowCountExpected: 0,
+			setExpectedCount(ev) {
+				if (ev.searchid === this.id) {
+					this.rowCountExpected = ev.count;
+				}
+			}
+		}` }
+		id={ props.SearchID }
+		x-sort:item={ `'` + props.SearchID + `'` }
+		class="flex flex-row gap-1 items-center cursor-pointer text-nowrap rounded-full py-0 px-3  hover:bg-blue-sky"
+		:class="searchID == id ? 'bg-blue-50 text-blue-500' : 'bg-neutral-100 text-neutral-700'"
+		@click.stop={ fmt.Sprintf("$dispatch('spl:search-initiated', { searchID: '%s', searchName: '%s', rowCountExpected: rowCountExpected }); $dispatch('spl:ui-reset')", props.SearchID, props.Label) }
+		@spl:search-pill-count="setExpectedCount($event.detail);"
+	>
+		{ props.Label } |&nbsp;
+		if props.Count != "" {
+			<span class="font-bold">{ props.Count }</span>
+		}
+		if props.SearchID != "" {
+			<div class="font-bold items-center" :id="$id('-count')">
+				<div hx-get={ props.SearchURL + props.SearchID } hx-trigger="load">
+					@animated.ThreeDots(animated.Props{})
+				</div>
+			</div>
+		}
+	</div>
+}

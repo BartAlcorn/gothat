@@ -1,0 +1,67 @@
+package fullscreenmodal
+
+import "github.com/bartalcorn/lucide"
+
+type Props struct {
+	// ID of the Modal
+	// default: ""
+	ID string
+
+	// Title to display
+	// default: ""
+	Title string
+
+	// text to display on trigger button
+	Label string
+}
+
+templ FullScreenModal(props *Props) {
+	<div
+		if props.ID !="" {
+			ID={ props.ID }
+		}
+		x-data="{
+			fullscreenModal: false,
+			title: '',
+			open(ev) {
+				this.fullscreenModal = true;
+				this.title = ev.title;
+				htmx.ajax(ev.method, ev.fetch, {
+						target: '#full-screen-modal-body',
+						swap: 'innerHTML',
+					})
+			}
+		 }"
+		@keyup.escape.document="fullscreenModal = false;"
+		@spl:full-screen-modal-open.document="open($event.detail);"
+	>
+		<button @click="fullscreenModal=true" class="got-component">{ props.Label }</button>
+		<template x-teleport="body">
+			<div
+				x-show="fullscreenModal"
+				x-transition:enter="transition ease-out duration-100"
+				x-transition:enter-start="opacity-0"
+				x-transition:enter-end="opacity-100"
+				x-transition:leave="transition ease-in duration-100"
+				x-transition:leave-start="opacity-100"
+				x-transition:leave-end="opacity-0"
+				class="flex flex-col gap-2 fixed inset-0 z-50 w-screen top-0 bottom-0 bg-gray-100"
+			>
+				<div class="flex-grow min-h-0 overflow-y-hidden">
+					<div class="flex gap-2 h-12 w-full px-4 items-center justify-between bg-gray-200 border-b border-gray-400">
+						<div>
+							if props.Title != "" {
+								{ props.Title }
+							}
+							<span x-text="title" class="flex-nowrap w-full text-base font-semibold text-gray-100 "></span>
+						</div>
+						<button @click="fullscreenModal=false" class="flex items-center justify-center text-gray-800 hover:text-blue-800">
+							@lucide.SquareX(lucide.Props{})
+						</button>
+					</div>
+					<div id="full-screen-modal-body" class="pt-4 px-4 overflow-y-auto max-h-[760px] inset-4 w-full"></div>
+				</div>
+			</div>
+		</template>
+	</div>
+}

@@ -1,0 +1,137 @@
+package input
+
+import (
+	"github.com/bartalcorn/gothat/pkg/components/typography"
+	"github.com/bartalcorn/gothat/pkg/tws"
+)
+
+// InputType represents the type of the input field.
+type InputType string
+
+// Constants for input types.
+const (
+	Text     InputType = "text"
+	Hidden   InputType = "hidden"
+	Password InputType = "password"
+	Email    InputType = "email"
+	Number   InputType = "number"
+	Tel      InputType = "tel"
+	URL      InputType = "url"
+	Search   InputType = "search"
+	Date     InputType = "date"
+	Time     InputType = "time"
+	File     InputType = "file"
+)
+
+// Props defines the properties for the Input component.
+type Props struct {
+	// ID is the unique identifier for the input field.
+	// Default: "" (empty string)
+	ID string
+
+	// Name is the name attribute of the input field.
+	// Default: "" (empty string)
+	Name string
+
+	// Label will appear above the input if present.
+	// Default: "" (empty string)
+	Label string
+
+	// Type specifies the type of the input field.
+	// Default: Text
+	Type InputType
+
+	// Placeholder is the placeholder text for the input field.
+	// Default: "" (empty string)
+	Placeholder string
+
+	// Value is the current value of the input field.
+	// Default: "" (empty string)
+	Value string
+
+	// Class specifies additional CSS classes to apply to the input field.
+	// Default: "" (empty string)
+	Class string
+
+	// Disabled can be either a bool or a string.
+	// If bool (Go), it directly controls the disabled state.
+	// If string, it's treated as a JavaScript expression for dynamic disabling.
+	// Default: nil
+	Disabled any
+
+	Quiet bool
+
+	// FileAccept specifies which file types are accepted (only for file type).
+	// Default: "" (empty string)
+	FileAccept string
+
+	// XShow is the alpine value to make this block visible
+	XShow string
+
+	// Attrs allows passing additional HTML attributes to the input element.
+	// Default: nil
+	Attrs templ.Attributes
+}
+
+// Input renders an input component based on the provided props.
+// It can be customized with various types, sizes, and behaviors.
+//
+// Usage:
+//
+//	@components.Input(components.Props{
+//	  Type: components.Email,
+//	  Placeholder: "Enter your email",
+//	  ID: "email-input",
+//	  Class: "custom-input",
+//	  Attrs: templ.Attributes{
+//	    "aria-label": "Email input",
+//	    "data-testid": "email-input",
+//	  },
+//	})
+//
+// Props:
+//   - Type: The type of the input field (e.g., Text, Email, Password). Default: Text
+//   - Placeholder: The placeholder text for the input field. Default: "" (empty string)
+//   - Value: The current value of the input field. Default: "" (empty string)
+//   - Name: The name attribute of the input field. Default: "" (empty string)
+//   - ID: The unique identifier for the input field. Default: "" (empty string)
+//   - Class: Additional CSS classes to apply to the input field. Default: "" (empty string)
+//   - Disabled: Can be either a bool or a string. If bool (Go), it directly controls the disabled state. If string, it's treated as a JavaScript expression for dynamic disabling. Default: nil
+//   - FileAccept: Specifies which file types are accepted (only for file type). Default: "" (empty string)
+//   - Attrs: Additional HTML attributes to apply to the input element. Default: nil
+templ Input(props *Props) {
+	<div
+		class="w-full mx-auto"
+		if props.XShow !="" {
+			x-show={ props.XShow }
+			x-cloak
+		}
+	>
+		if props.Label != "" {
+			@typography.Label(props.Label)
+		}
+		<input
+			id={ props.ID }
+			name={ props.Name }
+			type={ string(props.Type) }
+			placeholder={ props.Placeholder }
+			value={ props.Value }
+			class={ tws.TwMerge("dsc-form-input", props.Class) }
+			if !props.Quiet {
+				x-on:input.change="$dispatch('spl-change', { name: $event.target.name, value: $event.target.value });"
+			}
+			if props.Disabled != nil {
+				if disabledBool, ok := props.Disabled.(bool); ok && disabledBool {
+					disabled="true"
+				}
+				if disabledStr, ok := props.Disabled.(string); ok {
+					:disabled={ disabledStr }
+				}
+			}
+			if props.Type == File {
+				accept={ props.FileAccept }
+			}
+			{ props.Attrs... }
+		/>
+	</div>
+}

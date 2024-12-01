@@ -1,0 +1,28 @@
+package menu
+
+import "github.com/bartalcorn/gothat/pkg/components/typography"
+
+templ Showcase() {
+	@typography.Header(&typography.Props{
+		Title: "Component: Menu",
+		Class: "w-full border-b border-gray-400",
+	})
+	<div
+		x-data={ `{
+      selected: '',
+    }` }
+		class="mt-4"
+	>
+		@Menu(&Props{
+			Trigger: templ.Raw("<div>Trigger</div>"),
+			Items: []*ItemProps{
+				{Label: "This", Click: "selected = 'this'"},
+				{Label: "That", Click: "selected = 'that'"},
+				{Label: "The other", Click: "selected = 'the other'"},
+			},
+		})
+		<div class="p-4">
+			<span>Selected: <span x-text="selected"></span></span>
+		</div>
+	</div>
+}

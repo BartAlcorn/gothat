@@ -1,0 +1,22 @@
+package dialog
+
+import (
+	"github.com/bartalcorn/gothat/pkg/components/button"
+	"github.com/bartalcorn/gothat/pkg/components/typography"
+)
+
+templ Showcase() {
+	@typography.Header(&typography.Props{
+		Title: "Component: Dialog",
+		Class: "w-full border-b border-gray-400",
+	})
+	<div class="flex flex-col gap-4 justify-start mt-4">
+		@Dialog(&Props{Title: "Example Modal"}) {
+			<div class="p-4">Content goes here.</div>
+		}
+		@Dialog(&Props{
+			Trigger: button.Button(&button.Props{Label: "button trigger"}),
+			Content: templ.Raw(`<div class="p-4">Content goes here.</div>`),
+		})
+	</div>
+}

@@ -1,0 +1,37 @@
+package typography
+
+import "github.com/bartalcorn/gothat/pkg/tws"
+
+templ Label(label string) {
+	<label class="text-sm font-thin text-neutral-500 -mb-2">{ label }</label>
+}
+
+type Props struct {
+	ID         string //  element ID
+	Title      string // Header title
+	WithCounts bool   // auto-add "-count" span
+	Class      string // additional classes
+}
+
+templ Header(props *Props) {
+	<div
+		if props.ID !="" {
+			id="{props.ID}"
+		}
+		class={ tws.TwMerge("flex-nowrap w-full text-base font-semibold text-gray-600", props.Class) }
+	>
+		{ props.Title }
+		if props.ID != "" {
+			<span id={ props.ID + "-count" }></span>
+		}
+	</div>
+}
+
+templ HeaderRow(classes string) {
+	<div
+		class={ tws.TwMerge("h-[40px] w-full flex flex-row flex-nowrap items-center justify-between",
+		" border-b border-gray-300", classes) }
+	>
+		{ children... }
+	</div>
+}

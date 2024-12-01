@@ -1,0 +1,80 @@
+package menu
+
+import (
+	"github.com/bartalcorn/gothat/pkg/htmx"
+	"github.com/bartalcorn/gothat/pkg/tws"
+	"github.com/bartalcorn/lucide"
+)
+
+type Props struct {
+	Label     string          // Text label for button trigger
+	Trigger   templ.Component // instead of a icon / text label, use a component
+	Items     []*ItemProps    // Menu Items
+	Placement string          // which edge the menu aligns with trigger, defaults to left
+	Disabled  bool            // condition to disable
+	Class     string          // additional / options class styles
+}
+
+type ItemProps struct {
+	Label string          // Text label for menu item
+	Icon  templ.Component // icon before label
+	Click string          // on click javascript
+	HX    htmx.Props      // htmx on click
+}
+
+templ Menu(props *Props) {
+	<div x-data x-menu class="relative">
+		<button x-menu:button class={ tws.TwMerge("got-component", props.Class) }>
+			if props.Trigger == nil {
+				<span>{ props.Label }</span>
+				@lucide.ChevronDown(lucide.Props{})
+			} else {
+				@props.Trigger
+			}
+		</button>
+		<div
+			x-menu:items
+			{ props.placementTransition()... }
+			class={ "absolute ", props.placementClass(), " min-w-48 w-fit z-30 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-md py-1 outline-none" }
+			x-cloak
+		>
+			for _, item := range props.Items {
+				<div
+					x-menu:item
+					:class="{
+                'text-blue-500 bg-blue-50': $menuItem.isActive,
+                'text-blue-500': ! $menuItem.isActive,
+                'opacity-50 cursor-not-allowed': $menuItem.isDisabled,
+            }"
+					if item.Click != "" {
+						@click.stop={ "__isOpen = false; " + item.Click }
+					}
+					if item.HX.HasMethod() {
+						{ item.HX.Attrbs()... }
+						@click.stop={ "__isOpen = false;" }
+					}
+					class="flex gap-2 w-full items-center px-4 py-2 text-base transition-colors"
+				>
+					if item.Icon != nil {
+						@item.Icon
+					}
+					{ item.Label }
+				</div>
+			}
+		</div>
+	</div>
+}
+
+func (p *Props) placementTransition() templ.Attributes {
+	if p.Placement == "" || p.Placement == "left" {
+		return templ.Attributes{"x-transition.origin.top.left": true}
+	}
+	return templ.Attributes{"x-transition.origin.top.right": true}
+}
+
+func (p *Props) placementClass() string {
+	if p.Placement == "" || p.Placement == "left" {
+		return "left-0"
+	}
+	return "right-0"
+}

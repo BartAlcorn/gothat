@@ -1,0 +1,40 @@
+package dragdrop
+
+type Props struct {
+	ID    string            // id of the dragAndDrop container
+	Name  string            // name of the dragAndDrop container
+	Group string            // allows transfers between 'groups' of the same name
+	Items []templ.Component // list of items as templ.Components (inside of the draggable <li>)
+}
+
+type ItemProps struct {
+	Name    string
+	Classes string
+	Content templ.Component
+}
+
+templ List(props *Props) {
+	<ul
+		id={ props.ID }
+		name={ props.Name }
+		x-sort="$dispatch('spl-drop', { $el, $item, $position })"
+		x-sort:group={ props.Group }
+		class="flex flex-col gap-2 h-full border border-neutral-200 rounded-md w-full p-2 overflow-y-auto"
+	>
+		for _, item := range props.Items {
+			@item
+		}
+	</ul>
+}
+
+templ Item(props *ItemProps) {
+	<div
+		class="flex flex-row flex-grow-1 w-full items-center gap-4 p-1 border-b border-neutral-200"
+		data-header-name={ props.Name }
+		x-sort:item={ "'" + props.Name + "'" }
+	>
+		<div class="w-full">
+			@props.Content
+		</div>
+	</div>
+}

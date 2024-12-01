@@ -1,0 +1,35 @@
+package pulltab
+
+import (
+	"fmt"
+	"github.com/bartalcorn/gothat/pkg/components/button"
+	"github.com/bartalcorn/lucide"
+)
+
+type Props struct {
+	Title string
+	Click string
+	Attrs templ.Attributes
+}
+
+templ PullTab(props *Props) {
+	<div
+		class="flex flex-row items-center justify-center !w-4 -mr-2 overflow-x-hidden"
+	>
+		@button.Button(&button.Props{
+			Variant:  button.Icon,
+			Click:    props.Click,
+			IconLeft: PullTabIcon(props.Title),
+			Attrs:    props.Attrs,
+		})
+	</div>
+}
+
+templ PullTabIcon(title string) {
+	<div
+		class="duration-300"
+		:class={ fmt.Sprintf("detailDrawerTitle === '%s' ? 'rotate-90 duration-300 text-blue-500' : ''", title) }
+	>
+		@lucide.Menu(lucide.Props{})
+	</div>
+}

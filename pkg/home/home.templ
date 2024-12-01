@@ -1,0 +1,100 @@
+package home
+
+import (
+	"github.com/bartalcorn/gothat/pkg/components/tab"
+	"github.com/bartalcorn/gothat/pkg/components/typography"
+)
+
+templ base() {
+	<section id="home-base" class="flex flex-row gap-24 justify-between fixed top-12 bottom-10 left-0 right-0 p-4">
+		<section class="w-full">
+			<div class="font-bold text-gray-800 border-b border-gray-500 w-full mb-2">GOTHAT</div>
+			<p class="mt-2">
+				GOTHAT is a highly opininated framework for building <a href={ templ.SafeURL("https://en.wikipedia.org/wiki/Progressive_web_app") } target="_blank" class="hover:text-blue-500 underline">progessive web applications</a>.
+				<p>&nbsp;</p>
+				It differentiates itself from most &OpenCurlyDoubleQuote;modern&CloseCurlyDoubleQuote; web frameworks in that:
+				<ul class="pl-6 list-disc">
+					<li>it does not utilize a large, JavaScript framework as its base,</li>
+					<li>it is Server Side Rendered, using GO and Templ to template HTML,</li>
+					<li>it compiles to a single binary, making it very easy to deploy.</li>
+				</ul>
+			</p>
+			<p class="mt-2">
+				<strong class="text-blue-700">GOTHAT</strong> derives its name from the five main elements of the technology stack:
+				<p class="mt-2 ml-4">
+					<strong class="text-blue-700">GO</strong> <strong class="text-blue-700">T</strong>empl <strong class="text-blue-700">H</strong>tmx <strong class="text-blue-700">A</strong>lpinejs <strong class="text-blue-700">T</strong>ailwindcss
+				</p>
+			</p>
+			<p class="mt-4">
+				<div class="font-bold text-gray-800 border-b border-gray-500 w-full mb-2">Installation</div>
+				<p>Installation notes to follow:</p>
+			</p>
+		</section>
+		<section class="w-full">
+			@tab.Tabs(&tab.Props{
+				Tabs: []tab.Tab{
+					{ID: "go", Title: "GO", Content: goContent()},
+					{ID: "templ", Title: "Templ", Content: templContent()},
+					{ID: "htmx", Title: "HTMX", Content: htmxContent()},
+					{ID: "alpine", Title: "AlpineJS", Content: alpineContent()},
+					{ID: "tailwind", Title: "TailwindCSS", Content: tailwindContent()},
+				},
+			})
+		</section>
+	</section>
+}
+
+templ goContent() {
+	<div>
+		@typography.Label("web site: ")
+		<a href={ templ.SafeURL("https://go.dev") } target="_blank" class="hover:text-blue-500 hover:underline">https://go.dev</a>
+	</div>
+	<div>
+		@typography.Label("their slugline: ")
+		Build simple, secure, scalable systems with Go.
+	</div>
+}
+
+templ templContent() {
+	<div>
+		@typography.Label("web site: ")
+		<a href={ templ.SafeURL("https://templ.guide") } target="_blank" class="hover:text-blue-500 hover:underline">https://templ.guide</a>
+	</div>
+	<div>
+		@typography.Label("their slugline: ")
+		Build HTML with Go.
+	</div>
+}
+
+templ htmxContent() {
+	<div>
+		@typography.Label("web site: ")
+		<a href={ templ.SafeURL("https://htmx.org") } target="_blank" class="hover:text-blue-500 hover:underline">https://htmx.org</a>
+	</div>
+	<div>
+		@typography.Label("their slugline: ")
+		High power tools for HTML.
+	</div>
+}
+
+templ alpineContent() {
+	<div>
+		@typography.Label("web site: ")
+		<a href={ templ.SafeURL("https://alpinejs.dev") } target="_blank" class="hover:text-blue-500 hover:underline">https://alpinejs.dev</a>
+	</div>
+	<div>
+		@typography.Label("their slugline: ")
+		Your new, lightweight, JavaScript framework.
+	</div>
+}
+
+templ tailwindContent() {
+	<div>
+		@typography.Label("web site: ")
+		<a href={ templ.SafeURL("https://tailwindcss.com") } target="_blank" class="hover:text-blue-500 hover:underline">https://tailwindcss.com</a>
+	</div>
+	<div>
+		@typography.Label("their slugline: ")
+		A utility-first CSS framework that can be composed to build any design, directly in your markup.
+	</div>
+}

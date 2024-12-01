@@ -1,0 +1,170 @@
+package toggle
+
+import (
+	"fmt"
+	"github.com/bartalcorn/gothat/pkg/tws"
+)
+
+// Color indicates the color used
+// defaults to Primary if ""
+type Color string
+
+// Size represents the size of the toggle
+// values: sm | md | lg
+type Size string
+
+const (
+	Primary   Color = "primary"
+	Secondary Color = "secondary"
+	Success   Color = "success"
+	Info      Color = "info"
+	Warning   Color = "warning"
+	Danger    Color = "danger"
+	Gray      Color = "gray"
+
+	Sm Size = "sm"
+	Md Size = "md"
+	Lg Size = "lg"
+)
+
+// Props defines the properties for the Toggle component
+type Props struct {
+	// ID is the unique identifier for the toggle input
+	ID string
+
+	// Name is the name attribute for the toggle input
+	Name string
+
+	// Label is the text label for the toggle
+	LabelLeft string
+
+	// Label is the text label for the toggle
+	LabelRight string
+
+	// Color specifies additional CSS classes to apply to the button regarding color.
+	// Default: "" (empty string) == Primary
+	Color Color
+
+	// Size sets the size of the button.
+	// Default: Md
+	Size Size
+
+	// It's treated as an Alpine.js expression for dynamic checking.
+	// Example bool: Checked: "true"
+	// Example string: Checked: "darkMode"
+	Checked bool
+
+	// It's treated as an Alpine.js expression for dynamic checking.
+	// Example bool: Disabled: "true"
+	// Example string: Disabled: "isLoading"
+	Disabled string
+
+	// Class specifies additional CSS classes
+	Class string
+
+	// Attrs allows passing additional HTML attributes
+	Attrs templ.Attributes
+}
+
+func (p *Props) color() string {
+	switch p.Color {
+	case Primary:
+		return "'bg-blue-500' : 'bg-gray-400'"
+	case Secondary:
+		return "'bg-cyan-600' : 'bg-cyan-300'"
+	case Success:
+		return "'bg-green-600' : 'bg-green-300'"
+	case Info:
+		return "'bg-blue-600' : 'bg-blue-300'"
+	case Warning:
+		return "'bg-orange-600' : 'bg-orange-300'"
+	case Danger:
+		return "'bg-rose-600' : 'bg-rose-300'"
+	case Gray:
+		return "'bg-neutral-600' : 'bg-neutral-300'"
+
+	default:
+		return "'bg-blue-500' : 'bg-gray-400'"
+	}
+}
+
+func (p *Props) btnSize() string {
+	switch p.Size {
+	case Sm:
+		return "w-6"
+	case Lg:
+		return "w-14"
+	default:
+		return "w-10"
+	}
+}
+
+func (p *Props) spanSize() string {
+	switch p.Size {
+	case Sm:
+		return "h-3 w-3"
+	case Lg:
+		return "h-6 w-6"
+	default:
+		return "h-4 w-4"
+	}
+}
+
+func (p *Props) translateSize() string {
+	switch p.Size {
+	case Sm:
+		return "$switch.isChecked ? 'translate-x-3' : 'translate-x-1'"
+	case Lg:
+		return "$switch.isChecked ? 'translate-x-7' : 'translate-x-1'"
+	default:
+		return "$switch.isChecked ? 'translate-x-5' : 'translate-x-1'"
+	}
+}
+
+// Switcher renders a toggle switch component based on the provided props.
+// It can be customized with different label placements, and supports
+// both static and dynamic states through Alpine.js integration.
+//
+// Props:
+//   - ID: The unique identifier for the toggle input. Required.
+//   - Name: The name attribute for the toggle input. Required.
+//   - LabelLeft: The text label for the toggle. Optional.
+//   - LabelRight: The text label for the toggle. Optional.
+//   - Checked: Controls the checked state. Can be bool or string for Alpine.js binding. Optional.
+//   - Disabled: Controls the disabled state. Can be bool or string for Alpine.js binding. Optional.
+//   - Class: Additional CSS classes. Optional.
+//   - Attrs: Additional HTML attributes. Optional.
+templ Toggle(props *Props) {
+	<div
+		x-data={ fmt.Sprintf("{ value: %v }", props.Checked) }
+		x-switch:group
+		class={ tws.TwMerge("flex items-center justify-between max-w-max", tws.NoRing) }
+	>
+		<!-- Label -->
+		<label
+			x-switch:label
+			class="text-sm select-none"
+		>
+			<span x-show="$switch.isChecked">TEST</span>
+			{ props.LabelLeft }
+		</label>
+		<!-- Button -->
+		<button
+			x-switch
+			x-model="value"
+			:class={ "$switch.isChecked ? " + props.color() }
+			class={ "relative mx-2 inline-flex",props.btnSize(),"rounded-full py-1 transition" }
+		>
+			<span
+				:class={ props.translateSize() }
+				class={ "bg-white",props.spanSize(),"rounded-full transition shadow-md" }
+			></span>
+		</button>
+		<label
+			x-switch:label
+			class="text-sm select-none"
+		>
+			{ props.LabelRight }
+		</label>
+	</div>
+}

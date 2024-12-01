@@ -1,0 +1,33 @@
+package themeswitcher
+
+import (
+	"github.com/bartalcorn/gothat/pkg/components/button"
+	"github.com/bartalcorn/lucide"
+)
+
+templ ThemeSwitcher() {
+	@button.Button(&button.Props{
+		Variant:  button.Icon,
+		IconLeft: templ.Component(DynamicThemeIcon()),
+		Attrs: templ.Attributes{
+			"@click": "toggleTheme()",
+		},
+	})
+}
+
+templ DynamicThemeIcon() {
+	<span x-show="appTheme === 'dark'" class="block">
+		@LightIcon()
+	</span>
+	<span x-show="appTheme === 'light'" class="block">
+		@DarkIcon()
+	</span>
+}
+
+templ DarkIcon() {
+	@lucide.Moon(lucide.Props{})
+}
+
+templ LightIcon() {
+	@lucide.Sun(lucide.Props{})
+}
