@@ -41,7 +41,7 @@ func Showcase() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"flex flex-col gap-4\"><span class=\"label-text\">Primary</span><div class=\"flex flex-row gap-4\">")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 1)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -61,127 +61,7 @@ func Showcase() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><span class=\"label-text\">Secondary</span><div class=\"flex flex-row gap-4\">")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = Button(&Props{Variant: Secondary, Label: "Lorem Ipsum"}).Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = Button(&Props{Variant: Secondary, Label: "Lorem Ipsum", IconLeft: lucide.ClipboardCheck(lucide.Props{})}).Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = Button(&Props{Variant: Secondary, IconLeft: lucide.CirclePlus(lucide.Props{})}).Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = Button(&Props{Variant: Secondary, Label: "Lorem Ipsum", IconLeft: lucide.ClipboardCheck(lucide.Props{}), Disabled: true}).Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><span class=\"label-text\">Delete</span><div class=\"flex flex-row gap-4\">")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = Button(&Props{Variant: Delete, Label: "Delete"}).Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = Button(&Props{Variant: Delete, Label: "Delete", IconLeft: lucide.Trash2(lucide.Props{})}).Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = Button(&Props{Variant: Delete, IconLeft: lucide.Trash2(lucide.Props{})}).Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = Button(&Props{Variant: Delete, Label: "Delete", IconLeft: lucide.Trash2(lucide.Props{}), Disabled: true}).Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><span class=\"label-text\">Error</span><div class=\"flex flex-row gap-4\">")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = Button(&Props{Variant: Error, Label: "Error", IconLeft: lucide.CircleAlert(lucide.Props{})}).Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = Button(&Props{Variant: Error, Label: "Error", IconLeft: lucide.CircleAlert(lucide.Props{}), Disabled: true}).Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = Button(&Props{Variant: Error, IconLeft: lucide.CircleAlert(lucide.Props{})}).Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = Button(&Props{Variant: Error, IconLeft: lucide.CircleAlert(lucide.Props{}), Disabled: true}).Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><span class=\"label-text\">Warning</span><div class=\"flex flex-row gap-4\">")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = Button(&Props{Variant: Warning, Label: "Warning", IconLeft: lucide.TriangleAlert(lucide.Props{})}).Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = Button(&Props{Variant: Warning, Label: "Warning", IconLeft: lucide.TriangleAlert(lucide.Props{}), Disabled: true}).Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = Button(&Props{Variant: Warning, IconLeft: lucide.TriangleAlert(lucide.Props{})}).Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = Button(&Props{Variant: Warning, IconLeft: lucide.TriangleAlert(lucide.Props{}), Disabled: true}).Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><span class=\"label-text\">Success</span><div class=\"flex flex-row gap-4\">")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = Button(&Props{Variant: Success, Label: "Success", IconLeft: lucide.CircleCheck(lucide.Props{})}).Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = Button(&Props{Variant: Success, Label: "Success", IconLeft: lucide.CircleCheck(lucide.Props{}), Disabled: true}).Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = Button(&Props{Variant: Success, IconLeft: lucide.CircleCheck(lucide.Props{})}).Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = Button(&Props{Variant: Success, IconLeft: lucide.CircleCheck(lucide.Props{}), Disabled: true}).Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><span class=\"label-text\">Info</span><div class=\"flex flex-row gap-4\">")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = Button(&Props{Variant: Info, Label: "Info", IconLeft: lucide.RefreshCw(lucide.Props{})}).Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = Button(&Props{Variant: Info, Label: "Info", IconLeft: lucide.RefreshCw(lucide.Props{}), Disabled: true}).Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = Button(&Props{Variant: Info, IconLeft: lucide.RefreshCw(lucide.Props{})}).Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = Button(&Props{Variant: Info, IconLeft: lucide.RefreshCw(lucide.Props{}), Disabled: true}).Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div></div>")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 2)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

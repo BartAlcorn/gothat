@@ -10,7 +10,7 @@ templ Showcase() {
 		Title: "Component: Buttons",
 		Class: "w-full border-b border-gray-600 mb-4",
 	})
-	<div class="flex flex-col gap-4">
+	<div class="flex flex-col gap-4 overflow-y-auto ">
 		<span class="label-text">Primary</span>
 		<div class="flex flex-row gap-4">
 			@Button(&Props{Variant: Primary, Label: "Lorem Ipsum"})
@@ -18,47 +18,15 @@ templ Showcase() {
 			@Button(&Props{Variant: Primary, IconLeft: lucide.CirclePlus(lucide.Props{})})
 			@Button(&Props{Variant: Primary, Label: "Lorem Ipsum", IconLeft: lucide.ClipboardCheck(lucide.Props{}), Disabled: true})
 		</div>
-		<span class="label-text">Secondary</span>
-		<div class="flex flex-row gap-4">
-			@Button(&Props{Variant: Secondary, Label: "Lorem Ipsum"})
-			@Button(&Props{Variant: Secondary, Label: "Lorem Ipsum", IconLeft: lucide.ClipboardCheck(lucide.Props{})})
-			@Button(&Props{Variant: Secondary, IconLeft: lucide.CirclePlus(lucide.Props{})})
-			@Button(&Props{Variant: Secondary, Label: "Lorem Ipsum", IconLeft: lucide.ClipboardCheck(lucide.Props{}), Disabled: true})
-		</div>
-		<span class="label-text">Delete</span>
-		<div class="flex flex-row gap-4">
-			@Button(&Props{Variant: Delete, Label: "Delete"})
-			@Button(&Props{Variant: Delete, Label: "Delete", IconLeft: lucide.Trash2(lucide.Props{})})
-			@Button(&Props{Variant: Delete, IconLeft: lucide.Trash2(lucide.Props{})})
-			@Button(&Props{Variant: Delete, Label: "Delete", IconLeft: lucide.Trash2(lucide.Props{}), Disabled: true})
-		</div>
-		<span class="label-text">Error</span>
-		<div class="flex flex-row gap-4">
-			@Button(&Props{Variant: Error, Label: "Error", IconLeft: lucide.CircleAlert(lucide.Props{})})
-			@Button(&Props{Variant: Error, Label: "Error", IconLeft: lucide.CircleAlert(lucide.Props{}), Disabled: true})
-			@Button(&Props{Variant: Error, IconLeft: lucide.CircleAlert(lucide.Props{})})
-			@Button(&Props{Variant: Error, IconLeft: lucide.CircleAlert(lucide.Props{}), Disabled: true})
-		</div>
-		<span class="label-text">Warning</span>
-		<div class="flex flex-row gap-4">
-			@Button(&Props{Variant: Warning, Label: "Warning", IconLeft: lucide.TriangleAlert(lucide.Props{})})
-			@Button(&Props{Variant: Warning, Label: "Warning", IconLeft: lucide.TriangleAlert(lucide.Props{}), Disabled: true})
-			@Button(&Props{Variant: Warning, IconLeft: lucide.TriangleAlert(lucide.Props{})})
-			@Button(&Props{Variant: Warning, IconLeft: lucide.TriangleAlert(lucide.Props{}), Disabled: true})
-		</div>
-		<span class="label-text">Success</span>
-		<div class="flex flex-row gap-4">
-			@Button(&Props{Variant: Success, Label: "Success", IconLeft: lucide.CircleCheck(lucide.Props{})})
-			@Button(&Props{Variant: Success, Label: "Success", IconLeft: lucide.CircleCheck(lucide.Props{}), Disabled: true})
-			@Button(&Props{Variant: Success, IconLeft: lucide.CircleCheck(lucide.Props{})})
-			@Button(&Props{Variant: Success, IconLeft: lucide.CircleCheck(lucide.Props{}), Disabled: true})
-		</div>
-		<span class="label-text">Info</span>
-		<div class="flex flex-row gap-4">
-			@Button(&Props{Variant: Info, Label: "Info", IconLeft: lucide.RefreshCw(lucide.Props{})})
-			@Button(&Props{Variant: Info, Label: "Info", IconLeft: lucide.RefreshCw(lucide.Props{}), Disabled: true})
-			@Button(&Props{Variant: Info, IconLeft: lucide.RefreshCw(lucide.Props{})})
-			@Button(&Props{Variant: Info, IconLeft: lucide.RefreshCw(lucide.Props{}), Disabled: true})
+		<span class="label-text">DaisyUI Styled</span>
+		<div class="flex flex-row gap-4 w-1/4">
+			<button class="btn btn-neutral max-w-fit">Neutral</button>
+			<button class="btn btn-primary max-w-fit">Primary</button>
+			<button class="btn btn-secondary max-w-fit">Secondary</button>
+			<button class="btn btn-error max-w-fit">error</button>
+			<button class="btn btn-warning max-w-fit">warning</button>
+			<button class="btn btn-info max-w-fit">info</button>
+			<button class="btn btn-success max-w-fit">success</button>
 		</div>
 	</div>
 }

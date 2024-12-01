@@ -8,7 +8,7 @@ It differentiates itself from most “modern” SPA web frameworks in that:
 * it is Server Side Rendered, using GO and Templ to render HTML,
 * it uses htmx to render and replace portions of the DOM easily,
 * it uses AlpineJS for easier, concise JavaSCript for user interactions,
-* it uses TailwindCSS (currently v3.x) which is the least unusal aspect,
+* it uses TailwindCSS (currently v3.x) which is the least unusual aspect,
 * and finally, it compiles to a single binary, making it very easy to deploy.
 
 **GOTHAT** derives its name from the five main elements of the technology stack:
