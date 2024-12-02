@@ -1,6 +1,6 @@
 # GOTHAT
 
-GOTHAT is a highly opininated framework for building progessive web applications.
+GOTHAT is a highly opinionated framework for building progessive web applications.
 
 It differentiates itself from most “modern” SPA web frameworks in that:
 
