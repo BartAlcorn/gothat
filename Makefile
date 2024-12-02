@@ -2,7 +2,7 @@
 # tg - templ generate - stand alone
 .PHONY: templ
 templ:
-	templ generate --path ./pkg
+	templ generate --path ./pkg --lazy
 
 # tmpwatch - templ generate --watch w proxy
 .PHONY: templw

@@ -41,7 +41,7 @@ func Showcase() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"flex flex-col gap-4 overflow-y-auto \"><span class=\"label-text\">Primary</span><div class=\"flex flex-row gap-4\">")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 1)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -61,7 +61,7 @@ func Showcase() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><span class=\"label-text\">DaisyUI Styled</span><div class=\"flex flex-row gap-4 w-1/4\"><button class=\"btn btn-neutral max-w-fit\">Neutral</button> <button class=\"btn btn-primary max-w-fit\">Primary</button> <button class=\"btn btn-secondary max-w-fit\">Secondary</button> <button class=\"btn btn-error max-w-fit\">error</button> <button class=\"btn btn-warning max-w-fit\">warning</button> <button class=\"btn btn-info max-w-fit\">info</button> <button class=\"btn btn-success max-w-fit\">success</button></div></div>")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 2)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
