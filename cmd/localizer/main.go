@@ -27,6 +27,7 @@ type RemoteFile struct {
 
 func main() {
 	scripts := embedded.Scripts
+	sheets := embedded.StyleSheets
 	embedPath := "./pkg/embedded/assets/js/"
 
 	htmxPath := embedPath + "htmx"
@@ -43,7 +44,19 @@ func main() {
 		if err := os.WriteFile(path+"/"+scrpt.Name, body, 0666); err != nil {
 			log.Fatal(err)
 		}
+	}
 
+	for _, sheet := range sheets {
+		body, err := fetch(sheet.URL)
+		if err != nil {
+			break
+		}
+		path := embedPath + sheet.Folder
+		ensurePath(path)
+
+		if err := os.WriteFile(path+"/"+sheet.Name, body, 0666); err != nil {
+			log.Fatal(err)
+		}
 	}
 
 }
@@ -55,7 +68,7 @@ func fetch(url string) ([]byte, error) {
 	}
 
 	if resp.StatusCode != 200 {
-		log.Println("Error fetching CDN:", resp.StatusCode)
+		log.Println("Error fetching CDN:", url, resp.StatusCode)
 	}
 	defer resp.Body.Close()
 	body, err := io.ReadAll(resp.Body)

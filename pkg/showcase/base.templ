@@ -8,9 +8,15 @@ import (
 )
 
 templ base() {
-	<section id="showcase-base" class="flex flex-row gap-2 fixed top-12 bottom-10 left-0 right-0 p-4">
+	<section
+		id="showcase-base"
+		x-data={ `{
+			selected: '',
+		}` }
+		class="fixed left-0 right-0 flex flex-row gap-2 p-4 top-12 bottom-10"
+	>
 		<div
-			class="flex flex-col gap-2 w-fit pr-3"
+			class="flex flex-col gap-2 pr-3 w-fit"
 			hx-trigger="click"
 			hx-target="#showcase-main"
 		>
@@ -27,12 +33,14 @@ templ base() {
 			}}
 			for _, k := range keys {
 				<span
-					class="inline-flex w-fit min-w-32 items-center justify-between gap-2 whitespace-nowrap border-zinc-300 bg-zinc-100 px-2 py-1 text-sm font-medium capitalize tracking-wide text-neutral-600 transition hover:opacity-75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-700 rounded-lg border"
+					class="inline-flex items-center justify-between gap-2 px-2 py-1 text-sm font-medium tracking-wide capitalize transition cursor-pointer w-fit min-w-32 whitespace-nowrap text-neutral-600 hover:text-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 "
+					:class={ fmt.Sprintf("selected == '%s' ? 'text-blue-600' : '' ", k) }
+					@click={ fmt.Sprintf("selected = '%s'", k) }
 					hx-get={ fmt.Sprintf("/showcase/%s", k) }
 				>{ formats.TitleCase(k) }</span>
 			}
 		</div>
-		<div id="showcase-main" class="swappable flex flex-col gap-2 w-full">
+		<div id="showcase-main" class="flex flex-col w-full gap-2 swappable">
 			@typography.Header(&typography.Props{
 				Title: "Make a selection...",
 				Class: "w-full border-b border-gray-600 mb-4",

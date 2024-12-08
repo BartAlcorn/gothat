@@ -13,31 +13,6 @@ type Props struct {
 }
 
 templ Checkbox(props *Props) {
-	<div class={ props.Classes, "flex justify-start" }>
-		<div class="flex items-baseline h-5">
-			<input
-				id={ props.Name }
-				name={ props.Name }
-				type="checkbox"
-				class="peer w-5 h-5 rounded-sm border-2 border-gray-300 bg-gray-700 hover:border-blue-500 focus:ring-3 focus:ring-blue-500"
-				if props.Checked {
-					checked
-				}
-				if props.XModel !="" {
-					x-model={ props.XModel }
-				}
-				if props.Click != "" {
-					@click={ props.Click }
-				}
-			/>
-		</div>
-		<div class="ml-2 text-base">
-			<label for={ props.Name } class="text-gray-200 peer-checked:text-blue-500">{ props.Label }</label>
-		</div>
-	</div>
-}
-
-templ Checkbox2(props *Props) {
 	<div class="flex flex-col items-start">
 		<label
 			for={ props.Name }
@@ -50,12 +25,20 @@ templ Checkbox2(props *Props) {
 				<input
 					id={ props.Name }
 					type="checkbox"
-					class="before:content[''] peer relative size-5 cursor-pointer appearance-none overflow-hidden rounded border border-zinc-300 bg-zinc-100 before:absolute before:inset-0 checked:border-sky-700 checked:before:bg-sky-700 focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-zinc-500 checked:focus:outline-sky-700 active:outline-offset-0 disabled:cursor-not-allowed dark:border-zinc-700 dark:bg-zinc-800 dark:checked:border-sky-600 dark:checked:before:bg-sky-600 dark:focus:outline-zinc-500 dark:checked:focus:outline-sky-600"
+					class="before:content[''] peer relative size-5 cursor-pointer appearance-none overflow-hidden rounded border border-gray-300 bg-gray-100 before:absolute before:inset-0 checked:border-blue-600 checked:before:bg-blue-600 focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-zinc-500 checked:focus:outline-blue-600 active:outline-offset-0 disabled:cursor-not-allowed dark:border-zinc-700 dark:bg-zinc-800 dark:checked:border-sky-600 dark:checked:before:bg-sky-600 dark:focus:outline-zinc-500 dark:checked:focus:outline-sky-600"
 					if props.Checked {
 						checked
 					}
 				/>
-				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" stroke="currentColor" fill="none" stroke-width="4" class="pointer-events-none invisible absolute left-1/2 top-1/2 size-4 -translate-x-1/2 -translate-y-1/2 text-white peer-checked:visible dark:text-white">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					viewBox="0 0 24 24"
+					aria-hidden="true"
+					stroke="currentColor"
+					fill="none"
+					stroke-width="4"
+					class="absolute invisible text-white -translate-x-1/2 -translate-y-1/2 pointer-events-none left-1/2 top-1/2 size-4 peer-checked:visible dark:text-white"
+				>
 					<path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"></path>
 				</svg>
 			</div>
@@ -66,7 +49,7 @@ templ Checkbox2(props *Props) {
 		if props.Description !="" {
 			<span
 				id="checkboxDescription"
-				class="ml-6 text-sm text-neutral-600 dark:text-zinc-200"
+				class="ml-6 text-sm text-neutral-600 dark:text-gray-200"
 			>
 				{ props.Description }
 			</span>
@@ -76,22 +59,35 @@ templ Checkbox2(props *Props) {
 
 templ Containered(props *Props) {
 	<label
-		for="checkboxDefault"
-		class="inline-flex min-w-[14rem] cursor-pointer items-center justify-between rounded-lg gap-3 border border-zinc-300 bg-zinc-100 px-4 py-2 text-sm font-medium text-neutral-600 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200 [&:has(input:checked)]:text-neutral-900 dark:[&:has(input:checked)]:text-zinc-50 [&:has(input:disabled)]:opacity-75 [&:has(input:disabled)]:cursor-not-allowed"
+		for={ props.Name }
+		class="inline-flex min-w-fit cursor-pointer items-center justify-between rounded-lg gap-3 border border-zinc-300 bg-zinc-100 px-4 py-2 text-sm font-medium text-neutral-600 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200 [&:has(input:checked)]:text-neutral-900 dark:[&:has(input:checked)]:text-zinc-50 [&:has(input:disabled)]:opacity-75 [&:has(input:disabled)]:cursor-not-allowed"
 	>
-		<span>Notifications</span>
+		if props.LabelLeft != "" {
+			<span>{ props.LabelLeft }</span>
+		}
 		<div class="relative flex items-center">
 			<input
-				id="checkboxDefault"
+				id={ props.Name }
 				type="checkbox"
-				class="before:content[''] peer relative size-4 cursor-pointer appearance-none overflow-hidden rounded border border-zinc-300 bg-zinc-50 before:absolute before:inset-0 checked:border-sky-700 checked:before:bg-sky-700 focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-zinc-500 checked:focus:outline-sky-700 active:outline-offset-0 disabled:cursor-not-allowed dark:border-zinc-700 dark:bg-zinc-900 dark:checked:border-sky-600 dark:checked:before:bg-sky-600 dark:focus:outline-zinc-500 dark:checked:focus:outline-sky-600"
+				class="before:content[''] peer relative size-4 cursor-pointer appearance-none overflow-hidden rounded border border-zinc-300 bg-zinc-50 before:absolute before:inset-0 checked:border-blue-600 checked:before:bg-blue-600 focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-zinc-500 checked:focus:outline-blue-600 active:outline-offset-0 disabled:cursor-not-allowed dark:border-zinc-700 dark:bg-zinc-900 dark:checked:border-sky-600 dark:checked:before:bg-sky-600 dark:focus:outline-zinc-500 dark:checked:focus:outline-sky-600"
 				if props.Checked {
 					checked
 				}
 			/>
-			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" stroke="currentColor" fill="none" stroke-width="4" class="pointer-events-none invisible absolute left-1/2 top-1/2 size-3 -translate-x-1/2 -translate-y-1/2 text-white peer-checked:visible dark:text-white">
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				viewBox="0 0 24 24"
+				aria-hidden="true"
+				stroke="currentColor"
+				fill="none"
+				stroke-width="4"
+				class="absolute invisible text-white -translate-x-1/2 -translate-y-1/2 pointer-events-none left-1/2 top-1/2 size-3 peer-checked:visible dark:text-white"
+			>
 				<path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"></path>
 			</svg>
 		</div>
+		if props.Label != "" {
+			<span>{ props.Label }</span>
+		}
 	</label>
 }

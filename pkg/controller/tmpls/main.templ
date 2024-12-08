@@ -3,13 +3,12 @@ package tmpls
 import "time"
 
 templ Main(props *Props) {
-	<div id="main-header" class="flex flex-row gap-2 px-4 h-12 w-full items-center justify-between bg-gray-100 border-b border-gray-300">
-		<span>
-			<span class="text-2xl font-bold text-[#63C5E0] italic">GO</span>
-			<span class="text-2xl font-bold text-neutral-500 -ml-0.5">THAT</span>
-		</span>
-		@Navigation(props.Module, false)
-	</div>
+	@header(props)
+	@MainSection(props)
+	@footer()
+}
+
+templ MainSection(props *Props) {
 	<section id="main-section" class="fixed top-12 bottom-10 left-0 right-0 p-4">
 		if props.Content != nil {
 			@props.Content
@@ -20,7 +19,21 @@ templ Main(props *Props) {
 			}
 		}
 	</section>
-	<div id="main-footer" class="fixed bottom-0 flex flex-row gap-2 px-4 h-10 w-full items-center justify-end bg-gray-100 border-t border-gray-300">
+}
+
+templ header(props *Props) {
+	<div id="main-header" class="flex flex-row gap-2 px-4 h-12 w-full items-center justify-between bg-gray-50 border-b border-gray-200 shadow-sm">
+		<span>
+			<span class="text-2xl font-bold text-[#63C5E0] italic">GO</span>
+			<span class="text-2xl font-bold text-neutral-500 -ml-0.5">THAT</span>
+		</span>
+		@Navigation(props.Module, false)
+	</div>
+}
+
+templ footer() {
+	<div id="main-footer" class="fixed bottom-0 flex flex-row gap-2 px-4 h-10 w-full items-center justify-between bg-gray-50 border-t border-gray-200">
+		<span class="text-neutral-500 text-xs">&copy; 2024 Bart Alcorn</span>
 		<span class="text-neutral-500 text-xs">{ time.Now().Format("Jan _2 - 15:04:05 MST") }</span>
 	</div>
 }

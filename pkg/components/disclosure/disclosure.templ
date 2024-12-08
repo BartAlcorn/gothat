@@ -7,39 +7,31 @@ import (
 
 type Props struct {
 	// ID of the expandable
-	// default: ""
-	ID string
+	ID string // default: ""
 
 	// Title, the main title on the header
-	// required
-	Title string
+	Title string // required
 
 	// Open default state of the expandable
-	// default: false
-	Open bool
+	Open bool // default: false
 
 	// Class, additional css classes
-	// default: ""
-	Class string
-
-	// BoundClass
-	BoundClass string
+	Class string // default: ""
 
 	// Content interior content, here or via children
-	// default: nil
-	Content templ.Component
+	Content templ.Component // default: nil
+
+	// Header total Header replacement component
+	Header templ.Component // default: nil
 
 	// HeaderContent additional header content, e.g. toolbars
-	// default: nil
-	HeaderContent templ.Component
+	HeaderContent templ.Component // default: nil
 
 	// LeftHeaderContent additional header content, displayed BEFORE the chevron
-	// default: nil
-	LeftHeaderContent templ.Component
+	LeftHeaderContent templ.Component // default: nil
 
 	// OuterPadding, padding inside the drawer, outside the content
-	// default: "p-4"
-	OuterPadding string
+	OuterPadding string // default: "p-4"
 }
 
 // isOpen return the string value of bool Open
@@ -64,31 +56,16 @@ templ Disclosure(props *Props) {
 		x-data={ "{ isOpen: " + props.isOpen() + " }" }
 	>
 		<div x-disclosure x-model="isOpen">
-			<div
-				x-disclosure:button
-				class="flex flex-row items-center h-[40px] gap-2 p-2 w-full hover:bg-gray-100 transition-colors"
-				if props.BoundClass !="" {
-					:class={ props.BoundClass }
+			<div x-disclosure:button>
+				if props.Header != nil {
+					@props.Header
+				} else {
+					@header(props)
 				}
-			>
-				if props.LeftHeaderContent != nil {
-					@props.LeftHeaderContent
-				}
-				<div></div>
-				<div
-					class="duration-300 "
-					:class="$disclosure.isOpen ? 'rotate-90 duration-300 text-blue-500' : 'text-gray-header'"
-				>
-					@lucide.ChevronRight(lucide.Props{})
-				</div>
-				@Header(props)
 			</div>
 			<div
 				x-disclosure:panel
 				x-collapse
-				if props.BoundClass !="" {
-					:class={ props.BoundClass }
-				}
 				if props.LeftHeaderContent != nil {
 					class="pl-8"
 				}
@@ -104,19 +81,32 @@ templ Disclosure(props *Props) {
 	</div>
 }
 
-templ Header(props *Props) {
-	<div class="w-full flex flex-row flex-nowrap items-center justify-between">
-		<span
-			class="text-base"
-			:class="$disclosure.isOpen ? 'text-blue-500 font-semibold' : 'text-gray-header'"
-		>
-			{ props.Title }
-			if props.ID != "" {
-				<span id={ props.ID + "-count" }></span>
-			}
-		</span>
-		if props.HeaderContent != nil {
-			@props.HeaderContent
+templ header(props *Props) {
+	<div
+		class="flex flex-row cursor-pointer items-center h-[40px] gap-2 p-2 w-full hover:text-blue-400 hover:bg-gray-50 transition-colors"
+	>
+		if props.LeftHeaderContent != nil {
+			@props.LeftHeaderContent
 		}
+		<div
+			class="text-base duration-300"
+			:class="$disclosure.isOpen ? 'rotate-90 duration-300 text-blue-600' : ''"
+		>
+			@lucide.ChevronRight(lucide.Props{})
+		</div>
+		<div class="flex flex-row items-center justify-between w-full flex-nowrap">
+			<span
+				class="text-base hover:text-blue-400"
+				:class="$disclosure.isOpen ? 'text-blue-600' : ''"
+			>
+				{ props.Title }
+				if props.ID != "" {
+					<span id={ props.ID + "-count" }></span>
+				}
+			</span>
+			if props.HeaderContent != nil {
+				@props.HeaderContent
+			}
+		</div>
 	</div>
 }

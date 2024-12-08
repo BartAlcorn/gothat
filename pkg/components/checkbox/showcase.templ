@@ -8,20 +8,42 @@ templ Showcase() {
 		Class: "w-full border-b border-gray-400",
 	})
 	<section class="flex flex-col gap-4 p-4">
-		@Checkbox2(&Props{
+		@Checkbox(&Props{
 			Name:  "test1",
 			Label: "example, not checked by default",
 		})
-		@Checkbox2(&Props{
+		@Checkbox(&Props{
 			Name:      "test2",
 			Label:     "right label, checked by default",
 			LabelLeft: "left label",
 			Checked:   true,
 		})
-		@Checkbox2(&Props{
+		@Checkbox(&Props{
 			Name:      "test3",
 			LabelLeft: "left label only",
 			Checked:   false,
 		})
+		<div class="max-w-fit">
+			@Containered(&Props{
+				Name:    "container1",
+				Label:   "Right label only",
+				Checked: false,
+			})
+		</div>
+		<div class="max-w-fit">
+			@Containered(&Props{
+				Name:      "container2",
+				LabelLeft: "Left label only",
+				Checked:   false,
+			})
+		</div>
+		<div class="max-w-fit">
+			@Containered(&Props{
+				Name:      "container3",
+				Label:     "Sides",
+				LabelLeft: "Both",
+				Checked:   false,
+			})
+		</div>
 	</section>
 }

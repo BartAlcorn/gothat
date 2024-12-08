@@ -5,11 +5,11 @@ import (
 	"net/http"
 
 	"github.com/a-h/templ"
+
 	"github.com/bartalcorn/gothat/pkg/controller/tmpls"
 )
 
 func Render(w http.ResponseWriter, r *http.Request) {
-
 	ctx := r.Context()
 
 	if ctx.Value("module") != nil {
@@ -19,9 +19,6 @@ func Render(w http.ResponseWriter, r *http.Request) {
 			ctx = AddContent(ctx, tmpls.Navigation(m, true))
 		}
 	}
-	if ctx.Value("content") != nil {
-		fmt.Println("content", len(ctx.Value("content").([]templ.Component)))
-	}
 
 	if IsHTMX(r) {
 		for _, tc := range ctx.Value("content").([]templ.Component) {
@@ -30,7 +27,6 @@ func Render(w http.ResponseWriter, r *http.Request) {
 				fmt.Println("ERROR rendering template:", err)
 			}
 		}
-		fmt.Println("*** HTMX ***")
 		return
 	}
 

@@ -1,0 +1,50 @@
+version: '3'
+
+tasks:
+  templ:
+    desc: templ generate -watch No Browser
+    cmds:
+      - templ generate -watch -path ./pkg -proxy="http://localhost:9090" --proxyport="9191" -open-browser=false
+
+  templB:
+    desc: templ generate -watch WITH Browser
+    cmds:
+      - templ generate -watch -path ./pkg -proxy="http://localhost:9090" -open-browser=true -v
+
+  css:
+    desc: generate tailwind css
+    cmds:
+      - npx tailwindcss -i ./pkg/embedded/assets/css/tailwind.css -o ./pkg/embedded/assets/css/styles.css --watch
+
+  cssNW:
+    desc: generate tailwind css WITHOUT watch (stand alone)
+    cmds:
+      - npx tailwindcss -i ./pkg/embedded/assets/css/tailwind.css -o ./pkg/embedded/assets/css/styles.css
+
+  air:
+    desc: run air to detect any go file changes to re-build and re-run the server
+    cmds:
+      - air
+
+  dev:
+    desc: run templ and air concurrently   <- this is the main task
+    deps: [css, templ, air]
+
+  build:
+    desc: build GO application
+    cmds:
+      - CGO_ENABLED=0 go build -o ./main -tags lambda.norpc ./cmd/app/main.go
+
+  updair:
+    desc: install or update air
+    cmds:
+      - go install github.com/air-verse/air@latest
+
+  updtempl:
+    desc: install or update templ
+    cmds:
+      - go get -u github.com/a-h/templ
+      - go install github.com/a-h/templ/cmd/templ@latest
+
+  # default:
+  #   - task: live
