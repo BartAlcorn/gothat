@@ -15,9 +15,9 @@ func Render(w http.ResponseWriter, r *http.Request) {
 	if ctx.Value("module") != nil {
 		m := ctx.Value("module").(string)
 		SetModule(m)
-		if IsHTMX(r) {
-			ctx = AddContent(ctx, tmpls.Navigation(m, true))
-		}
+		// if IsHTMX(r) {
+		// 	ctx = AddContent(ctx, tmpls.Navigation(m, true))
+		// }
 	}
 
 	if IsHTMX(r) {

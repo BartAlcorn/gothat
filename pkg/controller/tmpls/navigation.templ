@@ -1,42 +1,57 @@
 package tmpls
 
 import (
-	"github.com/bartalcorn/gothat/pkg/components/menu"
+	"github.com/bartalcorn/gothat/pkg/components/button"
 	"github.com/bartalcorn/gothat/pkg/htmx"
 )
 
 templ Navigation(module string, oob bool) {
-	<div
+	<nav
 		id="navigation"
+		x-data={ `{
+			selected: '` + module + `',
+		}` }
 		if oob {
 			hx-swap-oob="true"
 		}
+		class="flex flex-row items-center gap-2"
+		hx-target="#main-section"
+		hx-trigger="click"
 	>
-		@menu.Menu(&menu.Props{
-			Trigger: trigger(module),
-			Items: []*menu.ItemProps{
-				{Label: "Home", HX: htmx.Props{
+		<div :class="selected === 'Home' ? 'text-blue-400' : ''">
+			@button.Button(&button.Props{
+				Variant: button.Text,
+				Label:   "Home",
+				Click:   "selected = 'Home'",
+				HX: htmx.Props{
 					Get:     "/",
-					Trigger: "click",
-					Target:  "#main-section",
 					PushUrl: "/",
-				}},
-				{Label: "Showcase", HX: htmx.Props{
+				},
+			})
+		</div>
+		<div :class="selected === 'Showcase' ? 'text-blue-400' : ''">
+			@button.Button(&button.Props{
+				Variant: button.Text,
+				Label:   "Showcase",
+				Click:   "selected = 'Showcase'",
+				HX: htmx.Props{
 					Get:     "/showcase/",
-					Trigger: "click",
-					Target:  "#main-section",
 					PushUrl: "/showcase/",
-				}},
-				{Label: "Weather", HX: htmx.Props{
+				},
+			})
+		</div>
+		<div :class="selected === 'Weather' ? 'text-blue-400' : ''">
+			@button.Button(&button.Props{
+				Variant: button.Text,
+				Label:   "Weather",
+				Click:   "selected = 'Weather'",
+				HX: htmx.Props{
 					Get:     "/weather/",
-					Trigger: "click",
-					Target:  "#main-section",
 					PushUrl: "/weather/",
-				}},
-			},
-			Placement: "right",
-		})
-	</div>
+				},
+			})
+		</div>
+	</nav>
 }
 
 templ trigger(module string) {

@@ -53,6 +53,10 @@ type Props struct {
 	// Default: nil
 	Content templ.Component
 
+	// BoundClass specifies additional CSS classes to apply when the bounded condition is met.
+	// Default: "" (empty string)
+	BoundClass string
+
 	// Class specifies additional CSS classes to apply to the button to override any previous class.
 	// Default: "" (empty string)
 	Class string
@@ -88,7 +92,7 @@ func (p *Props) variant() string {
 	case Secondary:
 		return "border border-blue-500 bg-white text-blue-500 hover:bg-blue-50" + diabled
 	case Text:
-		return "text-blue-500 hover:text-blue-800"
+		return "text-base hover:text-blue-600"
 	case Delete:
 		return "border border-rose-500 bg-white text-rose-500 hover:bg-rose-500-light disabled:border-gray-600 disabled:bg-transparent"
 	case Error:
@@ -144,6 +148,9 @@ templ Button(props *Props) {
 			}
 		}
 		class={ tws.TwMerge(base, " rounded-sm", props.variant(), props.size(), tws.NoRing, props.Class) }
+		if props.BoundClass !="" {
+			:class={ props.BoundClass }
+		}
 		if props.HX.HasMethod() {
 			{ props.HX.Attrbs()... }
 		}
@@ -157,7 +164,7 @@ templ Button(props *Props) {
 }
 
 templ renderButtonContent(props *Props) {
-	<span class="flex flex-row gap-1 items-center">
+	<span class="flex flex-row items-center gap-1">
 		if props.IconLeft != nil {
 			@props.IconLeft
 		}
