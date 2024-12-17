@@ -30,7 +30,7 @@ type Props struct {
 //   - Attributes: Additional HTML attributes to apply to the card element. Default: nil
 templ Card(props *Props) {
 	<div
-		class={ tws.TwMerge("rounded-lg border bg-card text-card-foreground shadow-sm", props.Class) }
+		class={ tws.TwMerge("rounded-lg border bg-card text-card-foreground shadow-xs", props.Class) }
 		{ props.Attrs... }
 	>
 		{ children... }

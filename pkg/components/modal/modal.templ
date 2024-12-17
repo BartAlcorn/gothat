@@ -24,7 +24,7 @@ templ Modal(props *Props) {
 		>
 			<!-- Modal inner -->
 			<div
-				class="max-w-max px-6 py-4 mx-max text-left bg-white rounded shadow-lg"
+				class="max-w-max px-6 py-4 mx-max text-left bg-white rounded-sm shadow-lg"
 				@click.away="showModal = false"
 				x-transition:enter="motion-safe:ease-out duration-300"
 				x-transition:enter-start="opacity-0 scale-90"

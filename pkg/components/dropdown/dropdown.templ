@@ -37,7 +37,7 @@ templ Dropdown(props *Props) {
 			x-popover:panel
 			x-cloak
 			{ props.placementTransition()... }
-			class={ "absolute", props.placementClass(), "mt-2 z-10 max-w-fit bg-white rounded-md shadow-sm outline-none border border-gray-200" }
+			class={ "absolute", props.placementClass(), "mt-2 z-10 max-w-fit bg-white rounded-md shadow-xs outline-hidden border border-gray-200" }
 		>
 			if props.Panel != nil {
 				@props.Panel

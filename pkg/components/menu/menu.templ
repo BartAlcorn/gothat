@@ -1,68 +1,33 @@
 package menu
 
 import (
+	"fmt"
 	"github.com/bartalcorn/gothat/pkg/htmx"
 	"github.com/bartalcorn/gothat/pkg/tws"
 	"github.com/bartalcorn/lucide"
+	"strings"
 )
 
 type Props struct {
+	ID        string          // id, if blank is generated
+	Name      string          // form name
 	Label     string          // Text label for button trigger
-	Trigger   templ.Component // instead of a icon / text label, use a component
-	Items     []*ItemProps    // Menu Items
+	Trigger   templ.Component // instead of a text label, use a component
 	Placement string          // which edge the menu aligns with trigger, defaults to left
+	Position  string          // popover placement
 	Disabled  bool            // condition to disable
-	Class     string          // additional / options class styles
+	Selected  string          // value of selected MenuItem
+	Items     []*MenuItem     // root level MenuItems
+	Class     string          // Additional CSS classes
 }
 
-type ItemProps struct {
-	Label string          // Text label for menu item
-	Icon  templ.Component // icon before label
-	Click string          // on click javascript
-	HX    htmx.Props      // htmx on click
-}
-
-templ Menu(props *Props) {
-	<div x-data x-menu class="relative">
-		<button x-menu:button class={ tws.TwMerge("got-component", props.Class) }>
-			if props.Trigger == nil {
-				<span>{ props.Label }</span>
-				@lucide.ChevronDown(lucide.Props{})
-			} else {
-				@props.Trigger
-			}
-		</button>
-		<div
-			x-menu:items
-			{ props.placementTransition()... }
-			class={ "absolute ", props.placementClass(), " min-w-48 w-fit z-30 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-md py-1 outline-none" }
-			x-cloak
-		>
-			for _, item := range props.Items {
-				<div
-					x-menu:item
-					:class="{
-                'text-blue-500 bg-blue-50': $menuItem.isActive,
-                'text-blue-500': ! $menuItem.isActive,
-                'opacity-50 cursor-not-allowed': $menuItem.isDisabled,
-            }"
-					if item.Click != "" {
-						@click.stop={ "__isOpen = false; " + item.Click }
-					}
-					if item.HX.HasMethod() {
-						{ item.HX.Attrbs()... }
-						@click.stop={ "__isOpen = false;" }
-					}
-					class="flex gap-2 w-full items-center px-4 py-2 text-base transition-colors"
-				>
-					if item.Icon != nil {
-						@item.Icon
-					}
-					{ item.Label }
-				</div>
-			}
-		</div>
-	</div>
+type MenuItem struct {
+	Label    string          // Text label for MenuItem
+	Value    string          // value for the MenuItem
+	Icon     templ.Component // icon before label
+	Click    string          // on click javascript
+	HX       htmx.Props      // htmx on click
+	SubItems []MenuItem      // Nested MenuItems (sub menus )
 }
 
 func (p *Props) placementTransition() templ.Attributes {
@@ -74,7 +39,78 @@ func (p *Props) placementTransition() templ.Attributes {
 
 func (p *Props) placementClass() string {
 	if p.Placement == "" || p.Placement == "left" {
-		return "left-0"
+		return "left-0 z-10 p-1 origin-top-left"
 	}
-	return "right-0"
+	return "right-0 z-10 p-1 origin-top-right"
+}
+
+func (mi *MenuItem) value() string {
+	if mi.Value != "" {
+		return mi.Value
+	}
+	return strings.ReplaceAll(strings.ToLower(mi.Label), " ", "_")
+}
+
+templ Menu(props *Props) {
+	<div
+		x-data={ `{
+			selected: '`+props.Selected+`',
+			select(ev) {
+				this.selected = ev;
+				$dispatch('gothat:menu-select', { value: ev });
+			},
+		}` }
+		x-menu
+		class="relative"
+	>
+		<button x-menu:button class={ tws.TwMerge("got-component", props.Class) }>
+			if props.Trigger == nil {
+				<span>{ props.Label }</span>
+				@lucide.ChevronDown(lucide.Props{})
+			} else {
+				@props.Trigger
+			}
+		</button>
+		<div
+			x-menu:items
+			{ props.placementTransition()... }
+			class={ "absolute ", props.placementClass(), " bg-white border border-gray-200 divide-y divide-gray-100 rounded-lg shadow-md outline-hidden min-w-48 w-fit" }
+			x-cloak
+		>
+			for _, item := range props.Items {
+				<div
+					x-menu:item
+					:class="{
+                'text-blue-600 bg-gray-50': $menuItem.isActive,
+                'text-base': ! $menuItem.isActive,
+                'opacity-50 cursor-not-allowed': $menuItem.isDisabled,
+            }"
+					if item.Click != "" {
+						@click.stop={ fmt.Sprintf("__isOpen = false; select('%v'); ", item.value()) + item.Click }
+					} else {
+						@click.stop={ fmt.Sprintf("__isOpen = false; select('%v'); ", item.value()) }
+					}
+					if item.HX.HasMethod() {
+						{ item.HX.Attrbs()... }
+						@click.stop={ "__isOpen = false;" }
+					}
+					class="flex items-center w-full gap-2 px-4 py-2 text-base transition-colors rounded-lg"
+				>
+					if item.Icon != nil {
+						@item.Icon
+					}
+					<span class="w-3 text-blue-600">
+						<span x-show={ fmt.Sprintf("selected === '%s'", item.value()) }>
+							@lucide.Check(lucide.Props{Size: "16"})
+						</span>
+					</span>
+					<span
+						:class={ fmt.Sprintf("{ 'text-blue-600': selected === '%s' }", item.value()) }
+					>
+						{ item.Label }
+					</span>
+				</div>
+			}
+		</div>
+	</div>
 }

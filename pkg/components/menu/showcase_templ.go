@@ -53,22 +53,52 @@ func Showcase() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"mt-4\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"mt-4\" @gothat:menu-select=\"selected = $event.detail.value;\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		templ_7745c5c3_Err = Menu(&Props{
 			Trigger: templ.Raw("<div>Trigger</div>"),
-			Items: []*ItemProps{
-				{Label: "This", Click: "selected = 'this'"},
-				{Label: "That", Click: "selected = 'that'"},
-				{Label: "The other", Click: "selected = 'the other'"},
+			Items: []*MenuItem{
+				{Label: "This"},
+				{Label: "That"},
+				{Label: "The other"},
 			},
 		}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"p-4\"><span>Selected: <span x-text=\"selected\"></span></span></div></div>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"p-4\"><span>Selected: <span x-text=\"selected\"></span></span></div></div><div x-data=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var3 string
+		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(`{
+      selected2: '',
+    }`)
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/menu/showcase.templ`, Line: 32, Col: 6}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"mt-4\" @gothat:menu-select=\"console.log(&#39;gothat:menu-select&#39;, $event); selected2 = $event.detail.value;\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = Menu(&Props{
+			Label: "This Menu has a long trigger Label",
+			Items: []*MenuItem{
+				{Label: "This"},
+				{Label: "That"},
+				{Label: "The other", Value: "H7g4-dIw2", Click: "alert('tada!')"},
+			},
+		}).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"p-4\"><span>Selected: <span x-text=\"selected2\"></span></span></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

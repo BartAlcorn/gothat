@@ -2,6 +2,7 @@ package button
 
 import (
 	"github.com/bartalcorn/gothat/pkg/components/typography"
+	"github.com/bartalcorn/gothat/pkg/tws"
 	"github.com/bartalcorn/lucide"
 )
 
@@ -11,23 +12,63 @@ templ Showcase() {
 		Class: "w-full border-b border-gray-600 mb-4",
 	})
 	<div class="flex flex-col gap-4 overflow-y-auto ">
-		<span class="label-text">Primary</span>
+		<span class="-mb-4 label-text">Primary</span>
 		<div class="flex flex-row gap-4">
-			@Button(&Props{Variant: Primary, Label: "Lorem Ipsum"})
-			@Button(&Props{Variant: Primary, Label: "Lorem Ipsum", IconLeft: lucide.ClipboardCheck(lucide.Props{})})
-			@Button(&Props{Variant: Primary, IconLeft: lucide.CirclePlus(lucide.Props{})})
-			@Button(&Props{Variant: Primary, Label: "Lorem Ipsum", IconLeft: lucide.ClipboardCheck(lucide.Props{}), Disabled: true})
+			@Button(&Props{Variant: Primary, Label: "Button"})
+			@Button(&Props{Variant: Primary, Label: "Button", IconLeft: lucide.CirclePlus(lucide.Props{Size: "20"})})
+			@Button(&Props{Variant: Primary, Label: "Button", IconLeft: lucide.CirclePlus(lucide.Props{Size: "20"}), IconRight: lucide.CircleMinus(lucide.Props{Size: "20"})})
+			@Button(&Props{Variant: Primary, Label: "Button", IconRight: lucide.CircleMinus(lucide.Props{Size: "20"})})
+			@Button(&Props{Variant: Primary, IconLeft: lucide.CirclePlus(lucide.Props{Size: "20"})})
+			@Button(&Props{Variant: Primary, Label: "Button", IconLeft: lucide.CirclePlus(lucide.Props{Size: "20"}), Disabled: true})
 		</div>
-		<span class="label-text">DaisyUI Styled</span>
-		<div class="flex flex-row gap-4 w-1/4">
-			<button class="btn btn-got max-w-fit">GoTHAT</button>
-			<button class="btn btn-neutral max-w-fit">Neutral</button>
-			<button class="btn btn-primary max-w-fit">Primary</button>
-			<button class="btn btn-secondary max-w-fit">Secondary</button>
-			<button class="btn btn-error max-w-fit">error</button>
-			<button class="btn btn-warning max-w-fit">warning</button>
-			<button class="btn btn-info max-w-fit">info</button>
-			<button class="btn btn-success max-w-fit">success</button>
+		<span class="-mb-4 label-text">Secondary</span>
+		<div class="flex flex-row gap-4">
+			@Button(&Props{Variant: Secondary, Label: "Button"})
+			@Button(&Props{Variant: Secondary, Label: "Button", IconLeft: lucide.ClipboardCheck(lucide.Props{Size: "20"})})
+			@Button(&Props{Variant: Secondary, Label: "Button", IconLeft: lucide.ClipboardCheck(lucide.Props{Size: "20"}), IconRight: lucide.ClipboardList(lucide.Props{Size: "20"})})
+			@Button(&Props{Variant: Secondary, Label: "Button", IconRight: lucide.ClipboardList(lucide.Props{Size: "20"})})
+			@Button(&Props{Variant: Secondary, IconLeft: lucide.ClipboardCheck(lucide.Props{Size: "20"})})
+			@Button(&Props{Variant: Secondary, Label: "Button", IconLeft: lucide.ClipboardCheck(lucide.Props{Size: "20"}), Disabled: true})
+		</div>
+		<span class="-mb-4 label-text">Danger</span>
+		<div class="flex flex-row gap-4">
+			@Button(&Props{Variant: Danger, Label: "Button"})
+			@Button(&Props{Variant: Danger, Label: "Button", IconLeft: lucide.OctagonAlert(lucide.Props{Size: "20"})})
+			@Button(&Props{Variant: Danger, Label: "Button", IconLeft: lucide.OctagonAlert(lucide.Props{Size: "20"}), IconRight: lucide.OctagonMinus(lucide.Props{Size: "20"})})
+			@Button(&Props{Variant: Danger, Label: "Button", IconRight: lucide.OctagonMinus(lucide.Props{Size: "20"})})
+			@Button(&Props{Variant: Danger, IconLeft: lucide.OctagonAlert(lucide.Props{Size: "20"})})
+			@Button(&Props{Variant: Danger, Label: "Button", IconLeft: lucide.OctagonAlert(lucide.Props{Size: "20"}), Disabled: true})
+		</div>
+		<span class="-mb-4 label-text">Warning</span>
+		<div class="flex flex-row gap-4">
+			@Button(&Props{Variant: Warning, Label: "Button"})
+			@Button(&Props{Variant: Warning, Label: "Button", IconLeft: lucide.TriangleAlert(lucide.Props{Size: "20"})})
+			@Button(&Props{Variant: Warning, Label: "Button", IconLeft: lucide.TriangleAlert(lucide.Props{Size: "20"}), IconRight: lucide.SquareMinus(lucide.Props{Size: "20"})})
+			@Button(&Props{Variant: Warning, Label: "Button", IconRight: lucide.SquareMinus(lucide.Props{Size: "20"})})
+			@Button(&Props{Variant: Warning, IconLeft: lucide.TriangleAlert(lucide.Props{Size: "20"})})
+			@Button(&Props{Variant: Warning, Label: "Button", IconLeft: lucide.TriangleAlert(lucide.Props{Size: "20"}), Disabled: true})
+		</div>
+		<span class="-mb-4 label-text">Info</span>
+		<div class="flex flex-row gap-4">
+			@Button(&Props{Variant: Info, Label: "Button"})
+			@Button(&Props{Variant: Info, Label: "Button", IconLeft: lucide.CircleAlert(lucide.Props{Size: "20"})})
+			@Button(&Props{Variant: Info, Label: "Button", IconLeft: lucide.CircleAlert(lucide.Props{Size: "20"}), IconRight: lucide.ExternalLink(lucide.Props{Size: "20"})})
+			@Button(&Props{Variant: Info, Label: "Button", IconRight: lucide.CircleGauge(lucide.Props{Size: "20"})})
+			@Button(&Props{Variant: Info, IconLeft: lucide.CircleAlert(lucide.Props{Size: "20"})})
+			@Button(&Props{Variant: Info, Label: "Button", IconLeft: lucide.CircleAlert(lucide.Props{Size: "20"}), Disabled: true})
+		</div>
+		<span class="-mb-4 label-text">Success</span>
+		<div class="flex flex-row gap-4">
+			@Button(&Props{Variant: Success, Label: "Button"})
+			@Button(&Props{Variant: Success, Label: "Button", IconLeft: lucide.CircleCheck(lucide.Props{Size: "20"})})
+			@Button(&Props{Variant: Success, Label: "Button", IconLeft: lucide.CircleCheck(lucide.Props{Size: "20"}), IconRight: lucide.BookmarkCheck(lucide.Props{Size: "20"})})
+			@Button(&Props{Variant: Success, Label: "Button", IconRight: lucide.BookmarkCheck(lucide.Props{Size: "20"})})
+			@Button(&Props{Variant: Success, IconLeft: lucide.ClipboardCheck(lucide.Props{Size: "20"})})
+			@Button(&Props{Variant: Success, Label: "Button", IconLeft: lucide.ClipboardCheck(lucide.Props{Size: "20"}), Disabled: true})
+		</div>
+		<span class="-mb-4 label-text">Tailwind Component Styled</span>
+		<div class="flex flex-row w-1/4 gap-4">
+			<button class={ tws.TwMerge(tws.Component, "max-w-fit") }>GoTHAT</button>
 		</div>
 	</div>
 }

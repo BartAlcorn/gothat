@@ -80,7 +80,7 @@ func FullScreenModal(props *Props) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</button><template x-teleport=\"body\"><div x-show=\"fullscreenModal\" x-transition:enter=\"transition ease-out duration-100\" x-transition:enter-start=\"opacity-0\" x-transition:enter-end=\"opacity-100\" x-transition:leave=\"transition ease-in duration-100\" x-transition:leave-start=\"opacity-100\" x-transition:leave-end=\"opacity-0\" class=\"flex flex-col gap-2 fixed inset-0 z-50 w-screen top-0 bottom-0 bg-gray-100\"><div class=\"flex-grow min-h-0 overflow-y-hidden\"><div class=\"flex gap-2 h-12 w-full px-4 items-center justify-between bg-gray-200 border-b border-gray-400\"><div>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</button><template x-teleport=\"body\"><div x-show=\"fullscreenModal\" x-transition:enter=\"transition ease-out duration-100\" x-transition:enter-start=\"opacity-0\" x-transition:enter-end=\"opacity-100\" x-transition:leave=\"transition ease-in duration-100\" x-transition:leave-start=\"opacity-100\" x-transition:leave-end=\"opacity-0\" class=\"flex flex-col gap-2 fixed inset-0 z-50 w-screen top-0 bottom-0 bg-gray-100\"><div class=\"grow min-h-0 overflow-y-hidden\"><div class=\"flex gap-2 h-12 w-full px-4 items-center justify-between bg-gray-200 border-b border-gray-400\"><div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

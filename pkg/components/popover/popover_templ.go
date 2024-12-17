@@ -41,6 +41,8 @@ type Props struct {
 	// if On is set to 'click', then away being true will close
 	// the popover display on any click not ON the display.
 	Away bool
+
+	Class string
 }
 
 func (p *Props) ref() string {
@@ -120,7 +122,7 @@ func Popover(props *Props) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" class=\"relative min-w-fit max-w-16 text-center rounded-lg shadow-sm z-10 bg-white p-1.5 outline-none border border-gray-200\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" class=\"relative min-w-fit max-w-16 text-center rounded-lg shadow-xs z-10 bg-white p-1.5 outline-hidden border border-gray-200\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

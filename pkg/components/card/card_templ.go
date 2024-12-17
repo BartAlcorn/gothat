@@ -57,7 +57,7 @@ func Card(props *Props) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		var templ_7745c5c3_Var2 = []any{tws.TwMerge("rounded-lg border bg-card text-card-foreground shadow-sm", props.Class)}
+		var templ_7745c5c3_Var2 = []any{tws.TwMerge("rounded-lg border bg-card text-card-foreground shadow-xs", props.Class)}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var2...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err

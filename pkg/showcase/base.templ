@@ -7,11 +7,16 @@ import (
 	"sort"
 )
 
-templ base() {
+type Props struct {
+	Content  templ.Component
+	Selected string
+}
+
+templ base(props *Props) {
 	<section
 		id="showcase-base"
 		x-data={ `{
-			selected: '',
+			selected: '`+props.Selected+`',
 		}` }
 		class="fixed left-0 right-0 flex flex-row gap-2 p-4 top-12 bottom-10"
 	>
@@ -34,18 +39,25 @@ templ base() {
 			for _, k := range keys {
 				<span
 					class="inline-flex items-center justify-between gap-2 px-2 py-1 text-sm font-medium tracking-wide capitalize transition cursor-pointer w-fit min-w-32 whitespace-nowrap text-neutral-600 hover:text-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 "
-					:class={ fmt.Sprintf("selected == '%s' ? 'text-blue-600' : '' ", k) }
+					:class={ fmt.Sprintf("selected === '%s' ? 'text-sky-600' : '' ", k) }
 					@click={ fmt.Sprintf("selected = '%s'", k) }
 					hx-get={ fmt.Sprintf("/showcase/%s", k) }
+					hx-push-url={ fmt.Sprintf("/showcase/%s", k) }
 				>{ formats.TitleCase(k) }</span>
 			}
 		</div>
 		<div id="showcase-main" class="flex flex-col w-full gap-2 swappable">
-			@typography.Header(&typography.Props{
-				Title: "Make a selection...",
-				Class: "w-full border-b border-gray-600 mb-4",
-			})
-			Select a component from the left side menu to display.
+			if props.Content != nil {
+				@props.Content
+			}
 		</div>
 	</section>
+}
+
+templ placeholder() {
+	@typography.Header(&typography.Props{
+		Title: "Make a selection...",
+		Class: "w-full border-b border-gray-600 mb-4",
+	})
+	<span>Select a component from the left side menu to display.</span>
 }

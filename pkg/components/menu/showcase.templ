@@ -12,17 +12,37 @@ templ Showcase() {
       selected: '',
     }` }
 		class="mt-4"
+		@gothat:menu-select="selected = $event.detail.value;"
 	>
 		@Menu(&Props{
 			Trigger: templ.Raw("<div>Trigger</div>"),
-			Items: []*ItemProps{
-				{Label: "This", Click: "selected = 'this'"},
-				{Label: "That", Click: "selected = 'that'"},
-				{Label: "The other", Click: "selected = 'the other'"},
+			Items: []*MenuItem{
+				{Label: "This"},
+				{Label: "That"},
+				{Label: "The other"},
 			},
 		})
 		<div class="p-4">
 			<span>Selected: <span x-text="selected"></span></span>
+		</div>
+	</div>
+	<div
+		x-data={ `{
+      selected2: '',
+    }` }
+		class="mt-4"
+		@gothat:menu-select="console.log('gothat:menu-select', $event); selected2 = $event.detail.value;"
+	>
+		@Menu(&Props{
+			Label: "This Menu has a long trigger Label",
+			Items: []*MenuItem{
+				{Label: "This"},
+				{Label: "That"},
+				{Label: "The other", Value: "H7g4-dIw2", Click: "alert('tada!')"},
+			},
+		})
+		<div class="p-4">
+			<span>Selected: <span x-text="selected2"></span></span>
 		</div>
 	</div>
 }

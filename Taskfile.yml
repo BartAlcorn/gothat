@@ -2,14 +2,14 @@ version: '3'
 
 tasks:
   templ:
-    desc: templ generate -watch No Browser
+    desc: templ generate -watch without opening a browser window
     cmds:
       - templ generate -watch -path ./pkg -proxy="http://localhost:9090" --proxyport="9191" -open-browser=false
 
   templB:
-    desc: templ generate -watch WITH Browser
+    desc: templ generate -watch and auto opens a browser window
     cmds:
-      - templ generate -watch -path ./pkg -proxy="http://localhost:9090" -open-browser=true -v
+      - templ generate -watch -path ./pkg -proxy="http://localhost:9090" --proxyport="9191" -open-browser=true -v
 
   css:
     desc: generate tailwind css
@@ -17,17 +17,17 @@ tasks:
       - npx tailwindcss -i ./pkg/embedded/assets/css/tailwind.css -o ./pkg/embedded/assets/css/styles.css --watch
 
   cssNW:
-    desc: generate tailwind css WITHOUT watch (stand alone)
+    desc: generate tailwind css WITHOUT the watcher (stand alone)
     cmds:
       - npx tailwindcss -i ./pkg/embedded/assets/css/tailwind.css -o ./pkg/embedded/assets/css/styles.css
 
   air:
-    desc: run air to detect any go file changes to re-build and re-run the server
+    desc: hot reloading of GO, this task is needed for the combined `dev` task
     cmds:
       - air
 
   dev:
-    desc: run templ and air concurrently   <- this is the main task
+    desc: run tailwind, templ and air concurrently   <- this is the main dev server task
     deps: [css, templ, air]
 
   build:
@@ -45,6 +45,11 @@ tasks:
     cmds:
       - go get -u github.com/a-h/templ
       - go install github.com/a-h/templ/cmd/templ@latest
+
+  updtailwind:
+    desc: install or update tailwind
+    cmds:
+      - npm install tailwindcss@next @tailwindcss/cli@next
 
   # default:
   #   - task: live

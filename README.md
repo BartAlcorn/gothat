@@ -23,25 +23,35 @@ Individual packages, see [weather](https://github.com/bartalcorn/weather), allow
 
 ## Usage
 
-Make a copy of `.env-example`, as `.env`.
+Make a copy of `.env-example`, as `.env` and edit as needed.
 
 `OWM_API_KEY` is only needed if using the [weather](https://github.com/bartalcorn/weather) package, and can be removed otherwise.
 
-run:
+if not already installed, install go-task:
 
-``` go
-go mod tidy
+``` zsh
+brew install go-task
 ```
+
+if you are on a Mac but don't already have brew installed, [Homebrew](https://brew.sh)
+
+if you are not on a Mac, install `go-task` via: [taskfile.dev](https://taskfile.dev/installation/)
+
+run `task` alone to see the list of available tasks and their descriptions.
 
 then run:
 
 ``` zsh
-make dev
+task updair
+task updtempl
+task updtailwind
+go mod tidy
+task dev
 ```
 
-## Available MAKE commands
+## Available TASK commands
 
-``` make
+``` task
              this is your main command
 dev          run all three below, in watch mode, combined
 
@@ -55,6 +65,7 @@ air          run air, hot reloading of GO application
 
 build        build GO application for linux
 
-update/air   install or update air https://github.com/air-verse/air
-update/templ install or update templ https://templ.guide/
+updair      install or update air https://github.com/air-verse/air
+updtempl    install or update templ https://templ.guide/
+updtailwind install or update tailwind https://tailwindcss.com/
 ```

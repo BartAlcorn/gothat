@@ -64,7 +64,7 @@ func SearchDrawer() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" class=\"fixed top-0 origin-top overflow-y-auto w-[600px] h-3/4 z-20 pt-[68px] pb-5 px-5 bg-white border border-gray-600 shadow-lg focus:outline-none\" role=\"menu\" aria-orientation=\"vertical\" aria-labelledby=\"search-drawer\" tabindex=\"-1\" style=\"display: none;\" @click.away=\"isDrawerSearchOpen = false\" @keyup.f.ctrl.window.prevent=\"isDrawerSearchOpen = true\" @spl:search-initiated.document=\"fetch($event)\" @spl-search-open.document=\"isDrawerSearchOpen = true\"><section class=\"h-full w-full\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" class=\"fixed top-0 origin-top overflow-y-auto w-[600px] h-3/4 z-20 pt-[68px] pb-5 px-5 bg-white border border-gray-600 shadow-lg focus:outline-hidden\" role=\"menu\" aria-orientation=\"vertical\" aria-labelledby=\"search-drawer\" tabindex=\"-1\" style=\"display: none;\" @click.away=\"isDrawerSearchOpen = false\" @keyup.f.ctrl.window.prevent=\"isDrawerSearchOpen = true\" @spl:search-initiated.document=\"fetch($event)\" @spl-search-open.document=\"isDrawerSearchOpen = true\"><section class=\"h-full w-full\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

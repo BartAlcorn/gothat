@@ -9,73 +9,32 @@ type Variant string
 type Size string
 
 type Props struct {
-	// Variant determines the visual style of the button.
-	Variant Variant `default:"primary"`
-
-	// Label is the content of the button.
-	// Default: "" (empty string)
-	Label string
-
-	// Size sets the size of the button.
-	Size Size `default:"md"`
-
-	// FullWidth determines whether the button should take up the full width of its container.
-	// Default: false
-	FullWidth bool
-
-	// Click is the JavaScript function to be called when the button is clicked. Usuallu by AlpineJS
-	// Default: ""
-	Click string
-
-	// Prevent is a bool to indicate whether the default action should occur onClick
-	// Default: false
-	Prevent bool
-
-	// HX allows passing additional HTMX attributes to the button or anchor element.
-	// Default: nil
-	HX htmx.Props
-
-	// Disabled can be either a bool or a string.
-	// If bool (Go), it directly controls the disabled state.
-	// If string, it's treated as a JavaScript expression for dynamic disabling.
-	Disabled bool
-
-	// IconLeft specifies an icon component to be displayed on the left side of the button text.
-	// Use IconLeft with a label for an Icon button
-	// Default: nil
-	IconLeft templ.Component
-
-	// IconRight specifies an icon component to be displayed on the right side of the button text.
-	// Default: nil
-	IconRight templ.Component
-
-	// Content - for truly dynamic button content
-	// Default: nil
-	Content templ.Component
-
-	// BoundClass specifies additional CSS classes to apply when the bounded condition is met.
-	// Default: "" (empty string)
-	BoundClass string
-
-	// Class specifies additional CSS classes to apply to the button to override any previous class.
-	// Default: "" (empty string)
-	Class string
-
-	// Attrs allows passing additional HTML attributes to the button or anchor element.
-	// Default: nil
-	Attrs templ.Attributes
+	Variant    Variant          // determines the visual style of the button
+	Label      string           // is the text content of the button, not used if Content is present
+	Size       Size             // the size of the button.
+	Click      string           // the JavaScript function to be called when the button is clicked. Usually by AlpineJS
+	Prevent    bool             // is a bool to indicate whether the default action should occur onClick
+	Disabled   bool             // can be either a bool or a string.
+	IconLeft   templ.Component  // specifies an icon component to be displayed on the left side of the button text
+	IconRight  templ.Component  // specifies an icon component to be displayed on the right side of the button text
+	Content    templ.Component  // for truly dynamic button content
+	Attrs      templ.Attributes // allows for additional HTML attributes
+	HX         htmx.Props       // allows for HTMX attributes
+	BoundClass string           // specifies additional CSS classes to apply when the bounded condition is met
+	Class      string           // specifies additional CSS classes to apply to the button to override any previous class
 }
 
 const (
 	base           string = "inline-block items-center justify-center space-x-4 space-y-3 whitespace-nowrap text-base leading-4 transition-colors no-ring"
-	diabled        string = " disabled:text-white disabled:border-gray-400 disabled:bg-gray-400 disabled:hover:border-gray-600 disabled:hover:bg-gray-600"
+	diabled        string = " disabled:text-neutral-500/50 disabled:border-gray-200/60 disabled:bg-gray-200/20 disabled:hover:border-bg-gray-200/10 disabled:hover:bg-gray-200/10"
 	diabledSpecial string = " disabled:border-gray-600 disabled:bg-gray-600"
 
+	Neutral   Variant = "neutral"
 	Primary   Variant = "primary"
 	Secondary Variant = "secondary"
 	Text      Variant = "text"
-	Delete    Variant = "delete"
 	Error     Variant = "error"
+	Danger    Variant = "danger"
 	Warning   Variant = "warning"
 	Success   Variant = "success"
 	Info      Variant = "info"
@@ -89,35 +48,27 @@ const (
 
 func (p *Props) variant() string {
 	switch p.Variant {
+	case Primary:
+		return tws.Primary + " " + tws.Disabled
 	case Secondary:
-		return "border border-blue-500 bg-white text-blue-500 hover:bg-blue-50" + diabled
+		return tws.Secondary + " " + tws.Disabled
 	case Text:
 		return "text-base hover:text-blue-600"
-	case Delete:
-		return "border border-rose-500 bg-white text-rose-500 hover:bg-rose-500-light disabled:border-gray-600 disabled:bg-transparent"
+	case Danger:
+		return tws.Danger + " " + tws.Disabled
 	case Error:
 		if p.Label != "" {
-			return "border border-rose-500 bg-white text-rose-500 bg-rose-500-light" + diabledSpecial
+			return "rounded-lg border border-rose-500 bg-white text-rose-500 bg-rose-500-light" + diabledSpecial
 		}
 		return "text-rose-500 hover:text-blue-500 disabled:text-gray-400"
 	case Icon:
 		return "text-gray-300 hover:text-blue-500"
 	case Warning:
-		if p.Label != "" {
-
-			return "border border-yellow-500 bg-white text-yellow-500 bg-yellow-500-light" + diabledSpecial
-		}
-		return "text-yellow-500 hover:text-blue-500 disabled:text-gray-400"
+		return tws.Warning + " " + tws.Disabled
 	case Success:
-		if p.Label != "" {
-			return "border border-green-500 bg-white text-green-500 bg-green-500-light" + diabledSpecial
-		}
-		return "text-green-500 hover:text-blue-500 disabled:text-gray-400"
+		return tws.Success + " " + tws.Disabled
 	case Info:
-		if p.Label != "" {
-			return "border border-blue-500 bg-white text-blue-500 bg-blue-500-light" + diabledSpecial
-		}
-		return "text-blue-500 hover:text-blue-500 disabled:text-gray-400"
+		return tws.Info + " " + tws.Disabled
 	default:
 		return "inline-flex w-fit items-center justify-between gap-2 whitespace-nowrap border-zinc-300 bg-zinc-100 px-4 py-2 text-sm font-medium capitalize tracking-wide text-neutral-600 transition hover:opacity-75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-700 rounded-lg border" + diabled
 	}
@@ -139,7 +90,6 @@ func (p *Props) size() string {
 
 templ Button(props *Props) {
 	<button
-		{ props.Attrs... }
 		if props.Click !="" {
 			if props.Prevent {
 				@click.prevent.stop={ props.Click }
@@ -147,29 +97,30 @@ templ Button(props *Props) {
 				@click.stop={ props.Click }
 			}
 		}
-		class={ tws.TwMerge(base, " rounded-sm", props.variant(), props.size(), tws.NoRing, props.Class) }
+		class={ tws.TwMerge(base, " rounded-xs", props.variant(), props.size(), tws.NoRing, props.Class) }
 		if props.BoundClass !="" {
 			:class={ props.BoundClass }
 		}
 		if props.HX.HasMethod() {
 			{ props.HX.Attrbs()... }
 		}
-		if props.Disabled {
-			disabled
-		}
+		{ props.Attrs... }
+		disabled?={ props.Disabled }
 	>
 		{ children... }
-		@renderButtonContent(props)
+		@content(props)
 	</button>
 }
 
-templ renderButtonContent(props *Props) {
+templ content(props *Props) {
 	<span class="flex flex-row items-center gap-1">
 		if props.IconLeft != nil {
 			@props.IconLeft
 		}
 		if props.Content != nil {
-			@props.Content
+			<span class="px-1">
+				@props.Content
+			</span>
 		}
 		{ props.Label }
 		if props.IconRight != nil {

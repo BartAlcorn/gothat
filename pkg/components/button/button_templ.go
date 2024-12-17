@@ -17,73 +17,32 @@ type Variant string
 type Size string
 
 type Props struct {
-	// Variant determines the visual style of the button.
-	Variant Variant `default:"primary"`
-
-	// Label is the content of the button.
-	// Default: "" (empty string)
-	Label string
-
-	// Size sets the size of the button.
-	Size Size `default:"md"`
-
-	// FullWidth determines whether the button should take up the full width of its container.
-	// Default: false
-	FullWidth bool
-
-	// Click is the JavaScript function to be called when the button is clicked. Usuallu by AlpineJS
-	// Default: ""
-	Click string
-
-	// Prevent is a bool to indicate whether the default action should occur onClick
-	// Default: false
-	Prevent bool
-
-	// HX allows passing additional HTMX attributes to the button or anchor element.
-	// Default: nil
-	HX htmx.Props
-
-	// Disabled can be either a bool or a string.
-	// If bool (Go), it directly controls the disabled state.
-	// If string, it's treated as a JavaScript expression for dynamic disabling.
-	Disabled bool
-
-	// IconLeft specifies an icon component to be displayed on the left side of the button text.
-	// Use IconLeft with a label for an Icon button
-	// Default: nil
-	IconLeft templ.Component
-
-	// IconRight specifies an icon component to be displayed on the right side of the button text.
-	// Default: nil
-	IconRight templ.Component
-
-	// Content - for truly dynamic button content
-	// Default: nil
-	Content templ.Component
-
-	// BoundClass specifies additional CSS classes to apply when the bounded condition is met.
-	// Default: "" (empty string)
-	BoundClass string
-
-	// Class specifies additional CSS classes to apply to the button to override any previous class.
-	// Default: "" (empty string)
-	Class string
-
-	// Attrs allows passing additional HTML attributes to the button or anchor element.
-	// Default: nil
-	Attrs templ.Attributes
+	Variant    Variant          // determines the visual style of the button
+	Label      string           // is the text content of the button, not used if Content is present
+	Size       Size             // the size of the button.
+	Click      string           // the JavaScript function to be called when the button is clicked. Usually by AlpineJS
+	Prevent    bool             // is a bool to indicate whether the default action should occur onClick
+	Disabled   bool             // can be either a bool or a string.
+	IconLeft   templ.Component  // specifies an icon component to be displayed on the left side of the button text
+	IconRight  templ.Component  // specifies an icon component to be displayed on the right side of the button text
+	Content    templ.Component  // for truly dynamic button content
+	Attrs      templ.Attributes // allows for additional HTML attributes
+	HX         htmx.Props       // allows for HTMX attributes
+	BoundClass string           // specifies additional CSS classes to apply when the bounded condition is met
+	Class      string           // specifies additional CSS classes to apply to the button to override any previous class
 }
 
 const (
 	base           string = "inline-block items-center justify-center space-x-4 space-y-3 whitespace-nowrap text-base leading-4 transition-colors no-ring"
-	diabled        string = " disabled:text-white disabled:border-gray-400 disabled:bg-gray-400 disabled:hover:border-gray-600 disabled:hover:bg-gray-600"
+	diabled        string = " disabled:text-neutral-500/50 disabled:border-gray-200/60 disabled:bg-gray-200/20 disabled:hover:border-bg-gray-200/10 disabled:hover:bg-gray-200/10"
 	diabledSpecial string = " disabled:border-gray-600 disabled:bg-gray-600"
 
+	Neutral   Variant = "neutral"
 	Primary   Variant = "primary"
 	Secondary Variant = "secondary"
 	Text      Variant = "text"
-	Delete    Variant = "delete"
 	Error     Variant = "error"
+	Danger    Variant = "danger"
 	Warning   Variant = "warning"
 	Success   Variant = "success"
 	Info      Variant = "info"
@@ -97,35 +56,27 @@ const (
 
 func (p *Props) variant() string {
 	switch p.Variant {
+	case Primary:
+		return tws.Primary + " " + tws.Disabled
 	case Secondary:
-		return "border border-blue-500 bg-white text-blue-500 hover:bg-blue-50" + diabled
+		return tws.Secondary + " " + tws.Disabled
 	case Text:
 		return "text-base hover:text-blue-600"
-	case Delete:
-		return "border border-rose-500 bg-white text-rose-500 hover:bg-rose-500-light disabled:border-gray-600 disabled:bg-transparent"
+	case Danger:
+		return tws.Danger + " " + tws.Disabled
 	case Error:
 		if p.Label != "" {
-			return "border border-rose-500 bg-white text-rose-500 bg-rose-500-light" + diabledSpecial
+			return "rounded-lg border border-rose-500 bg-white text-rose-500 bg-rose-500-light" + diabledSpecial
 		}
 		return "text-rose-500 hover:text-blue-500 disabled:text-gray-400"
 	case Icon:
 		return "text-gray-300 hover:text-blue-500"
 	case Warning:
-		if p.Label != "" {
-
-			return "border border-yellow-500 bg-white text-yellow-500 bg-yellow-500-light" + diabledSpecial
-		}
-		return "text-yellow-500 hover:text-blue-500 disabled:text-gray-400"
+		return tws.Warning + " " + tws.Disabled
 	case Success:
-		if p.Label != "" {
-			return "border border-green-500 bg-white text-green-500 bg-green-500-light" + diabledSpecial
-		}
-		return "text-green-500 hover:text-blue-500 disabled:text-gray-400"
+		return tws.Success + " " + tws.Disabled
 	case Info:
-		if p.Label != "" {
-			return "border border-blue-500 bg-white text-blue-500 bg-blue-500-light" + diabledSpecial
-		}
-		return "text-blue-500 hover:text-blue-500 disabled:text-gray-400"
+		return tws.Info + " " + tws.Disabled
 	default:
 		return "inline-flex w-fit items-center justify-between gap-2 whitespace-nowrap border-zinc-300 bg-zinc-100 px-4 py-2 text-sm font-medium capitalize tracking-wide text-neutral-600 transition hover:opacity-75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-700 rounded-lg border" + diabled
 	}
@@ -166,59 +117,55 @@ func Button(props *Props) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		var templ_7745c5c3_Var2 = []any{tws.TwMerge(base, " rounded-sm", props.variant(), props.size(), tws.NoRing, props.Class)}
+		var templ_7745c5c3_Var2 = []any{tws.TwMerge(base, " rounded-xs", props.variant(), props.size(), tws.NoRing, props.Class)}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var2...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 1)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, props.Attrs)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<button")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if props.Click != "" {
 			if props.Prevent {
-				templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 2)
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" @click.prevent.stop=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var3 string
 				templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(props.Click)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/button/button.templ`, Line: 145, Col: 37}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/button/button.templ`, Line: 95, Col: 37}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 3)
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			} else {
-				templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 4)
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" @click.stop=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var4 string
 				templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(props.Click)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/button/button.templ`, Line: 147, Col: 29}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/button/button.templ`, Line: 97, Col: 29}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 5)
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
 		}
-		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 6)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" class=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -231,25 +178,25 @@ func Button(props *Props) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 7)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if props.BoundClass != "" {
-			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 8)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" :class=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var6 string
 			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(props.BoundClass)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/button/button.templ`, Line: 152, Col: 28}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/button/button.templ`, Line: 102, Col: 28}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 9)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -260,13 +207,17 @@ func Button(props *Props) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
+		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, props.Attrs)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
 		if props.Disabled {
-			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 10)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" disabled")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 11)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -274,11 +225,11 @@ func Button(props *Props) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = renderButtonContent(props).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = content(props).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 12)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</button>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -286,7 +237,7 @@ func Button(props *Props) templ.Component {
 	})
 }
 
-func renderButtonContent(props *Props) templ.Component {
+func content(props *Props) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -307,7 +258,7 @@ func renderButtonContent(props *Props) templ.Component {
 			templ_7745c5c3_Var7 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 13)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<span class=\"flex flex-row items-center gap-1\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -318,7 +269,15 @@ func renderButtonContent(props *Props) templ.Component {
 			}
 		}
 		if props.Content != nil {
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<span class=\"px-1\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
 			templ_7745c5c3_Err = props.Content.Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -326,13 +285,13 @@ func renderButtonContent(props *Props) templ.Component {
 		var templ_7745c5c3_Var8 string
 		templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(props.Label)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/button/button.templ`, Line: 174, Col: 15}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/button/button.templ`, Line: 125, Col: 15}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 14)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -342,7 +301,7 @@ func renderButtonContent(props *Props) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 15)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

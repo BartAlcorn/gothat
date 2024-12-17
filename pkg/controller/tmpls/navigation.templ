@@ -18,7 +18,7 @@ templ Navigation(module string, oob bool) {
 		hx-target="#main-section"
 		hx-trigger="click"
 	>
-		<div :class="selected === 'Home' ? 'text-blue-400' : ''">
+		<div :class="selected === 'Home' ? 'text-blue-600' : ''">
 			@button.Button(&button.Props{
 				Variant: button.Text,
 				Label:   "Home",
@@ -29,7 +29,7 @@ templ Navigation(module string, oob bool) {
 				},
 			})
 		</div>
-		<div :class="selected === 'Showcase' ? 'text-blue-400' : ''">
+		<div :class="selected === 'Showcase' ? 'text-blue-600' : ''">
 			@button.Button(&button.Props{
 				Variant: button.Text,
 				Label:   "Showcase",
@@ -40,7 +40,7 @@ templ Navigation(module string, oob bool) {
 				},
 			})
 		</div>
-		<div :class="selected === 'Weather' ? 'text-blue-400' : ''">
+		<div :class="selected === 'Weather' ? 'text-blue-600' : ''">
 			@button.Button(&button.Props{
 				Variant: button.Text,
 				Label:   "Weather",

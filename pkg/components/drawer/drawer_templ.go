@@ -99,7 +99,7 @@ func Drawer(props *Props) templ.Component {
 		}
 		ctx = templ.ClearChildren(ctx)
 		var templ_7745c5c3_Var2 = []any{tws.TwMerge("fixed ", props.sidedClasses(), " overflow-y-hidden", props.getWidth(),
-			"top-[60px] bottom-[60px] z-20 bg-gray-500 border-l border-gray-400 shadow-lg focus:outline-none", props.Class)}
+			"top-[60px] bottom-[60px] z-20 bg-gray-500 border-l border-gray-400 shadow-lg focus:outline-hidden", props.Class)}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var2...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err

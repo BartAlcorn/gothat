@@ -25,7 +25,7 @@ templ Checkbox(props *Props) {
 				<input
 					id={ props.Name }
 					type="checkbox"
-					class="before:content[''] peer relative size-5 cursor-pointer appearance-none overflow-hidden rounded border border-gray-300 bg-gray-100 before:absolute before:inset-0 checked:border-blue-600 checked:before:bg-blue-600 focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-zinc-500 checked:focus:outline-blue-600 active:outline-offset-0 disabled:cursor-not-allowed dark:border-zinc-700 dark:bg-zinc-800 dark:checked:border-sky-600 dark:checked:before:bg-sky-600 dark:focus:outline-zinc-500 dark:checked:focus:outline-sky-600"
+					class="before:content[''] peer relative size-5 cursor-pointer appearance-none overflow-hidden rounded-sm border border-gray-300 bg-gray-100 before:absolute before:inset-0 checked:border-blue-600 checked:before:bg-blue-600 focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-zinc-500 checked:focus:outline-blue-600 active:outline-offset-0 disabled:cursor-not-allowed dark:border-zinc-700 dark:bg-zinc-800 dark:checked:border-sky-600 dark:checked:before:bg-sky-600 dark:focus:outline-zinc-500 dark:checked:focus:outline-sky-600"
 					if props.Checked {
 						checked
 					}
@@ -69,7 +69,7 @@ templ Containered(props *Props) {
 			<input
 				id={ props.Name }
 				type="checkbox"
-				class="before:content[''] peer relative size-4 cursor-pointer appearance-none overflow-hidden rounded border border-zinc-300 bg-zinc-50 before:absolute before:inset-0 checked:border-blue-600 checked:before:bg-blue-600 focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-zinc-500 checked:focus:outline-blue-600 active:outline-offset-0 disabled:cursor-not-allowed dark:border-zinc-700 dark:bg-zinc-900 dark:checked:border-sky-600 dark:checked:before:bg-sky-600 dark:focus:outline-zinc-500 dark:checked:focus:outline-sky-600"
+				class="before:content[''] peer relative size-4 cursor-pointer appearance-none overflow-hidden rounded-sm border border-zinc-300 bg-zinc-50 before:absolute before:inset-0 checked:border-blue-600 checked:before:bg-blue-600 focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-zinc-500 checked:focus:outline-blue-600 active:outline-offset-0 disabled:cursor-not-allowed dark:border-zinc-700 dark:bg-zinc-900 dark:checked:border-sky-600 dark:checked:before:bg-sky-600 dark:focus:outline-zinc-500 dark:checked:focus:outline-sky-600"
 				if props.Checked {
 					checked
 				}

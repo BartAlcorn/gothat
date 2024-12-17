@@ -75,7 +75,7 @@ templ Drawer(props *Props) {
 		x-show={ props.XShow }
 		{ alpinejs.Translate(&alpinejs.TranslateProps{Direction: props.translateSide()})... }
 		class={ tws.TwMerge("fixed ", props.sidedClasses()," overflow-y-hidden", props.getWidth(),
-		"top-[60px] bottom-[60px] z-20 bg-gray-500 border-l border-gray-400 shadow-lg focus:outline-none", props.Class) }
+		"top-[60px] bottom-[60px] z-20 bg-gray-500 border-l border-gray-400 shadow-lg focus:outline-hidden", props.Class) }
 		role="menu"
 		aria-orientation="vertical"
 		aria-labelledby={ "drawer-" + string(props.Side) }

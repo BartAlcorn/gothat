@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/a-h/templ"
+
 	"github.com/bartalcorn/gothat/pkg/components/breadcrumb"
 	"github.com/bartalcorn/gothat/pkg/components/button"
 	"github.com/bartalcorn/gothat/pkg/components/checkbox"
@@ -12,6 +13,7 @@ import (
 	"github.com/bartalcorn/gothat/pkg/components/dialog"
 	"github.com/bartalcorn/gothat/pkg/components/disclosure"
 	"github.com/bartalcorn/gothat/pkg/components/dropdown"
+	"github.com/bartalcorn/gothat/pkg/components/listbox"
 	"github.com/bartalcorn/gothat/pkg/components/menu"
 	"github.com/bartalcorn/gothat/pkg/components/modal"
 	"github.com/bartalcorn/gothat/pkg/components/popover"
@@ -30,12 +32,18 @@ type Handler interface {
 
 func (h *handlers) base(w http.ResponseWriter, r *http.Request) {
 	ctx := context.WithValue(r.Context(), "module", "Showcase")
-	ctx = controller.AddContent(ctx, base())
+	ctx = controller.AddContent(ctx, base(&Props{Content: placeholder()}))
 	controller.Render(w, r.WithContext(ctx))
 }
 
 func (h *handlers) element(w http.ResponseWriter, r *http.Request) {
 	el := r.PathValue("element")
+	if !controller.IsHTMX(r) {
+		ctx := context.WithValue(r.Context(), "module", "Showcase")
+		ctx = controller.AddContent(ctx, base(&Props{Content: elements[el], Selected: el}))
+		controller.Render(w, r.WithContext(ctx))
+		return
+	}
 	ctx := controller.AddContent(r.Context(), elements[el])
 	controller.Render(w, r.WithContext(ctx))
 }
@@ -48,6 +56,7 @@ var elements = map[string]templ.Component{
 	"dialog":     dialog.Showcase(),
 	"disclosure": disclosure.Showcase(),
 	"dropdown":   dropdown.Showcase(),
+	"listbox":    listbox.Showcase(),
 	"menu":       menu.Showcase(),
 	"modal":      modal.Showcase(),
 	"popover":    popover.Showcase(),

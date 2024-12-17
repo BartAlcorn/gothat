@@ -100,7 +100,7 @@ func Dropdown(props *Props) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		var templ_7745c5c3_Var3 = []any{"absolute", props.placementClass(), "mt-2 z-10 max-w-fit bg-white rounded-md shadow-sm outline-none border border-gray-200"}
+		var templ_7745c5c3_Var3 = []any{"absolute", props.placementClass(), "mt-2 z-10 max-w-fit bg-white rounded-md shadow-xs outline-hidden border border-gray-200"}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var3...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err

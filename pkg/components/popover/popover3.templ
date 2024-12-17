@@ -1,0 +1,81 @@
+package popover
+
+import (
+	"github.com/bartalcorn/gothat/pkg/components/button"
+	"github.com/bartalcorn/gothat/pkg/tws"
+	"github.com/bartalcorn/lucide"
+)
+
+// Floating menu for displaying a list of actions or options.
+templ DropdownMenu(props *Props) {
+	<div
+		x-data="{
+			open: false,
+			position: $el.dataset.position,
+			verticalPosition: 'bottom',
+			updatePosition() {
+				const menu = this.$refs.menu;
+				const rect = menu.getBoundingClientRect();
+				const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+				const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+
+				if (this.position === 'left' && rect.left < 0) {
+					this.position = 'right';
+				} else if (this.position !== 'left' && rect.right > viewportWidth) {
+					this.position = 'left';
+				}
+
+				if (this.verticalPosition === 'bottom' && rect.bottom > viewportHeight) {
+					this.verticalPosition = 'top';
+				} else if (this.verticalPosition === 'top' && rect.top < 0) {
+					this.verticalPosition = 'bottom';
+				}
+			}
+		}"
+		@resize.window="if (open) updatePosition()"
+		class={ tws.TwMerge("relative inline-block text-left", props.Class) }
+		data-position={ props.Placement }
+	>
+		<div @click="open = !open; if(open) $nextTick(() => updatePosition())">
+			if props.TriggerContent != nil {
+				@props.TriggerContent
+			} else {
+				@button.Button(&button.Props{
+					Label:     "Options",
+					Variant:   "outline",
+					IconRight: lucide.ChevronDown(lucide.Props{Size: "16"}),
+				})
+			}
+		</div>
+		<div
+			x-ref="menu"
+			x-show="open"
+			@click.away="open = false"
+			@keydown.escape.window="open = false"
+			x-transition:enter="transition ease-out duration-100"
+			x-transition:enter-start="transform opacity-0 scale-95"
+			x-transition:enter-end="transform opacity-100 scale-100"
+			x-transition:leave="transition ease-in duration-75"
+			x-transition:leave-start="transform opacity-100 scale-100"
+			x-transition:leave-end="transform opacity-0 scale-95"
+			class={
+				"absolute z-50 mt-2 w-56 rounded-md shadow-lg bg-popover ring-1 ring-black ring-opacity-5 focus:outline-hidden",
+				"border border-border",
+			}
+			:class="{
+				'right-0': position === 'left',
+				'left-0': position !== 'left',
+				'bottom-full mb-2': verticalPosition === 'top',
+				'top-full mt-2': verticalPosition === 'bottom'
+			}"
+			role="menu"
+			aria-orientation="vertical"
+			aria-labelledby="dropdown-menu-button"
+			tabindex="-1"
+		>
+			if templ.GetChildren(ctx) != nil {
+				{ children... }
+			}
+		</div>
+	</div>
+}

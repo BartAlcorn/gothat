@@ -1,72 +1,25 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
 @layer base {
-  .htmx-added {
-    view-transition-name: swapping;
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
   }
-
-  /* .swappable {
-    view-transition-name: swapping;
-  } */
-
-  ::view-transition-old(root),
-  ::view-transition-new(root) {
-    animation: none;
-  }
-
-  /* ::view-transition-old(swapping) {
-    animation: animate-out 0.2s ease-in-out;
-  } */
-
-  ::view-transition-new(swapping) {
-    animation: fade-in 0.3s ease-in-out;
-  }
-
-  @keyframes slideOutToBottom {
-    from {
-      transform: translateY(0);
-    }
-
-    to {
-      transform: translateY(8px);
-    }
-  }
-  @keyframes slideInFromTop {
-    from {
-      transform: translateY(-8px);
-    }
-
-    to {
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes fade-out {
-    0% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 0;
-    }
-  }
-
-  @keyframes fade-in {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
-}
-
-@layer components {
   .got-component {
-    @apply inline-flex items-center justify-center gap-2 gap-x-1.5 rounded-md border-gray-600 bg-gray-100 px-3 py-2 text-sm text-gray-800 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 hover:text-gray-600 active:bg-blue-50 active:text-blue-600;
+    @apply inline-flex items-center justify-center gap-2 gap-x-1.5 rounded-md border-gray-600 bg-gray-100 px-3 py-2 text-sm text-gray-800 shadow-xs ring-1 ring-inset ring-gray-300 hover:bg-gray-50 hover:text-blue-600 active:bg-blue-600/50 active:text-blue-600;
   }
   .no-ring {
-    @apply focus:outline-none focus:ring-0 focus:ring-neutral-400 focus:ring-offset-2 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-2 disabled:cursor-not-allowed;
+    @apply focus:outline-hidden focus:ring-0 focus:ring-neutral-400 focus:ring-offset-2 focus-visible:outline-hidden focus-visible:ring-0 focus-visible:ring-offset-2 disabled:cursor-not-allowed;
   }
 }

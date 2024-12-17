@@ -57,7 +57,7 @@ func Modal(props *Props) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><!-- Modal --><div class=\"fixed inset-0 z-30 flex items-center justify-center overflow-auto bg-black bg-opacity-50\" x-show=\"showModal\"><!-- Modal inner --><div class=\"max-w-max px-6 py-4 mx-max text-left bg-white rounded shadow-lg\" @click.away=\"showModal = false\" x-transition:enter=\"motion-safe:ease-out duration-300\" x-transition:enter-start=\"opacity-0 scale-90\" x-transition:enter-end=\"opacity-100 scale-100\"><!-- Title / Close--><div class=\"flex items-center justify-between\"><h5 class=\"mr-3 text-black max-w-none\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><!-- Modal --><div class=\"fixed inset-0 z-30 flex items-center justify-center overflow-auto bg-black bg-opacity-50\" x-show=\"showModal\"><!-- Modal inner --><div class=\"max-w-max px-6 py-4 mx-max text-left bg-white rounded-sm shadow-lg\" @click.away=\"showModal = false\" x-transition:enter=\"motion-safe:ease-out duration-300\" x-transition:enter-start=\"opacity-0 scale-90\" x-transition:enter-end=\"opacity-100 scale-100\"><!-- Title / Close--><div class=\"flex items-center justify-between\"><h5 class=\"mr-3 text-black max-w-none\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

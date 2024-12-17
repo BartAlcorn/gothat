@@ -240,7 +240,7 @@ func Item(id string, module string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"flex flex-row gap-4 py-1 px-2 w-full items-center justify-between rounded-sm hover:text-blue-500 hover:bg-gray-600 transition-color\" :class=\"{ &#39;text-blue-500 bg-blue-50&#39;: isSelected($el.id) }\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"flex flex-row gap-4 py-1 px-2 w-full items-center justify-between rounded-xs hover:text-blue-500 hover:bg-gray-600 transition-color\" :class=\"{ &#39;text-blue-500 bg-blue-50&#39;: isSelected($el.id) }\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

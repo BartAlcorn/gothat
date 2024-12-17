@@ -1,0 +1,55 @@
+package listbox
+
+import "github.com/bartalcorn/gothat/pkg/components/typography"
+
+templ Showcase() {
+	@typography.Header(&typography.Props{
+		Title: "Component: Listbox (Popover Menu)",
+		Class: "w-full border-b border-gray-400",
+	})
+	<div class="w-full h-full mt-4">
+		<div
+			x-data={ `{
+			selected: null,
+		}` }
+			class="mt-4"
+			@gothat:change="console.log('gothat:change', $event);selected = $event.detail.value;"
+		>
+			@Listbox(&Props{
+				Name: "sample1",
+				Items: []MenuItem{
+					{Label: "This", Value: "this"},
+					{Label: "That", Value: "that"},
+					{Label: "The other", Value: "other"},
+				},
+			})
+			<div class="mt-2">
+				<span class="font-thin text-gray-400">Selected # 1: <span class="font-semibold text-gray-600" x-text="selected"></span></span>
+			</div>
+		</div>
+		<div
+			x-data={ `{
+			selected: null,
+		}` }
+			class="mt-4"
+			@gothat:change="console.log('gothat:change', $event);selected = $event.detail.value;"
+		>
+			@Listbox(&Props{
+				Name:  "sample2",
+				Label: "Other options",
+				Items: []MenuItem{
+					{Label: "This", Value: "this"},
+					{Label: "That", Value: "that"},
+					{Label: "The other", Value: "other", SubItems: []MenuItem{
+						{Label: "This Level 2", Value: "this_lvl2"},
+						{Label: "That Level 2", Value: "that_lvl2"},
+						{Label: "The other Level 2", Value: "other_lvl2"},
+					}},
+				},
+			})
+			<div class="mt-2">
+				<span class="font-thin text-gray-400">Selected # 2: <span class="font-semibold text-gray-600" x-text="selected"></span></span>
+			</div>
+		</div>
+	</div>
+}

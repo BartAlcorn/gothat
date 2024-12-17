@@ -43,24 +43,24 @@ func Translate(props *TranslateProps) templ.Attributes {
 		props.DurationOut = "duration-300"
 	}
 
-	var dir templ.Attributes
+	attrs := templ.Attributes{}
 	switch props.Direction {
 	case Top:
-		dir = TranslateTop
+		attrs = TranslateTop
 	case Right:
-		dir = TranslateRight
+		attrs = TranslateRight
 	case Bottom:
-		dir = TranslateBottom
+		attrs = TranslateBottom
 	case Left:
-		dir = TranslateLeft
+		attrs = TranslateLeft
 	}
 	if props.DurationIn != "" {
-		dir["x-transition:enter"] = fmt.Sprintf("transform transition ease-in %s", props.DurationIn)
+		attrs["x-transition:enter"] = fmt.Sprintf("transform transition ease-in %s", props.DurationIn)
 	}
 	if props.DurationOut != "" {
-		dir["x-transition:leave"] = fmt.Sprintf("transform transition ease-out %s", props.DurationOut)
+		attrs["x-transition:leave"] = fmt.Sprintf("transform transition ease-out %s", props.DurationOut)
 	}
-	return dir
+	return attrs
 }
 
 var TranslateLeft = templ.Attributes{

@@ -1,0 +1,230 @@
+package listbox
+
+import (
+	"fmt"
+	"github.com/bartalcorn/gothat/pkg/components/alpinejs"
+	"github.com/bartalcorn/gothat/pkg/components/button"
+	"github.com/bartalcorn/gothat/pkg/tws"
+	"github.com/bartalcorn/lucide"
+	"github.com/bartalcorn/nanoid"
+	"strings"
+)
+
+type Props struct {
+	ID       string          // id, if blank is generated
+	Name     string          // form name
+	Label    string          // label, if not blank
+	Selected string          // value of selected MenuItem
+	Trigger  templ.Component // Custom trigger element
+	Position string          // white placement
+	Items    []MenuItem      // the menu items
+	Class    string          // Additional CSS classes
+}
+
+type MenuItem struct {
+	Label      string           // text to display
+	Value      string           // value of item
+	Href       string           // Optional link URL
+	Target     string           // Optional link target
+	IconLeft   templ.Component  // Optional icon on the left
+	IconRight  templ.Component  // Optional icon on the right
+	SubItems   []MenuItem       // Nested MenuItems (sub menus )
+	Disabled   bool             // Disables the item
+	Attributes templ.Attributes // Additional HTML attributess
+}
+
+func (props *Props) header() templ.Attributes {
+	attrs := templ.Attributes{}
+	if props.ID != "" {
+		attrs["id"] = props.ID
+	} else {
+		attrs["id"] = nanoid.WebSafeID()
+	}
+	if props.Name != "" {
+		attrs["name"] = props.Name
+	}
+	return attrs
+}
+
+func (props *Props) label() string {
+	if props.Label != "" {
+		return props.Label
+	}
+	return "Options"
+}
+
+func (item MenuItem) modifierClasses() string {
+	classes := []string{}
+	if item.Disabled {
+		classes = append(classes, "text-gray-400/50 cursor-not-allowed")
+	} else {
+		classes = append(classes, "text-foreground hover:bg-gray-200/50 hover:text-blue-500")
+	}
+	return strings.Join(classes, " ")
+}
+
+templ renderMenuItem(item MenuItem, index int, depth int) {
+	if len(item.SubItems) > 0 {
+		<div class="relative group">
+			<button
+				class={
+					tws.TwMerge(
+						"w-full text-left flex items-center justify-between z-10 px-4 py-2 text-sm",
+						item.modifierClasses(),
+					),
+				}
+				role="menuitem"
+				tabindex="-1"
+				id={ fmt.Sprintf("menu-item-%d", index) }
+				aria-haspopup="true"
+				aria-expanded="false"
+				disabled?={ item.Disabled }
+				{ item.Attributes... }
+				@click.prevent.stop={ fmt.Sprintf("$dispatch('gothat:change', { value: '%s'}  );isOpen = false;", item.Value) }
+			>
+				<span class="flex items-center gap-2">
+					if item.IconLeft != nil {
+						@item.IconLeft
+					}
+					{ item.Label }
+				</span>
+				if item.IconRight != nil {
+					@item.IconRight
+				} else {
+					@lucide.ChevronRight(lucide.Props{Size: "16"})
+				}
+			</button>
+			if depth < 3 {
+				<div class="absolute top-0 hidden left-full w-fit max-w-96 group-hover:block">
+					<div class="py-1 bg-white border border-gray-400 rounded-md shadow-lg">
+						for subIndex, subItem := range item.SubItems {
+							@renderMenuItem(subItem, subIndex, depth+1)
+						}
+					</div>
+				</div>
+			}
+		</div>
+	} else if item.Href != "" {
+		<a
+			href={ templ.SafeURL(item.Href) }
+			target={ item.Target }
+			class={
+				"px-4 py-2 text-sm flex items-center",
+				templ.KV("text-foreground hover:bg-gray-200/50 hover:text-blue-500", !item.Disabled),
+				templ.KV("text-muted-foreground cursor-not-allowed", item.Disabled),
+			}
+			role="menuitem"
+			tabindex="-1"
+			id={ fmt.Sprintf("menu-item-%d", index) }
+			{ item.Attributes... }
+		>
+			<span class="flex items-center gap-2">
+				if item.IconLeft != nil {
+					@item.IconLeft
+				}
+				{ item.Label }
+			</span>
+			if item.IconRight != nil {
+				<span class="ml-auto">
+					@item.IconRight
+				</span>
+			}
+		</a>
+	} else {
+		<button
+			class={
+				"relative flex w-full cursor-default select-none items-center rounded-md py-1.5 pe-2 ps-8 text-sm outline-hidden focus:bg-gray-200/50 focus:text-blue-500 data-disabled:pointer-events-none data-disabled:opacity-50",
+				templ.KV("text-foreground hover:bg-gray-200/50 hover:text-blue-600", !item.Disabled),
+				templ.KV("text-muted-foreground cursor-not-allowed", item.Disabled),
+			}
+			role="menuitem"
+			tabindex="-1"
+			id={ fmt.Sprintf("menu-item-%d", index) }
+			disabled?={ item.Disabled }
+			{ item.Attributes... }
+			@click.prevent.stop={ fmt.Sprintf("$dispatch('gothat:change', { value: '%s'}  );isOpen = false;", item.Value) }
+		>
+			<span class="flex items-center gap-2">
+				if item.IconLeft != nil {
+					@item.IconLeft
+				}
+				{ item.Label }
+			</span>
+			if item.IconRight != nil {
+				@item.IconRight
+			}
+		</button>
+	}
+}
+
+// Floating menu for displaying a list of actions or options.
+templ Listbox(props *Props) {
+	<div
+		{ props.header()... }
+		x-data="{
+			isOpen: false,
+			position: $el.dataset.position,
+			verticalPosition: 'bottom',
+			updatePosition() {
+				const menu = this.$refs.menu;
+				const rect = menu.getBoundingClientRect();
+				const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+				const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+
+				if (this.position === 'left' && rect.left < 0) {
+					this.position = 'right';
+				} else if (this.position !== 'left' && rect.right > viewportWidth) {
+					this.position = 'left';
+				}
+
+				if (this.verticalPosition === 'bottom' && rect.bottom > viewportHeight) {
+					this.verticalPosition = 'top';
+				} else if (this.verticalPosition === 'top' && rect.top < 0) {
+					this.verticalPosition = 'bottom';
+				}
+			}
+		}"
+		@resize.window="if (isOpen) updatePosition()"
+		class={ tws.TwMerge("relative inline-block text-left", props.Class) }
+		data-position={ props.Position }
+	>
+		<div @click="isOpen = !isOpen; if(isOpen) $nextTick(() => updatePosition())">
+			if props.Trigger != nil {
+				@props.Trigger
+			} else {
+				@button.Button(&button.Props{
+					Variant:   button.Neutral,
+					Label:     props.label(),
+					IconRight: lucide.ChevronDown(lucide.Props{Size: "16"}),
+				})
+			}
+		</div>
+		<div
+			x-ref="menu"
+			x-show="isOpen"
+			@click.away="isOpen = false"
+			@keydown.escape.window="isOpen = false"
+			{ alpinejs.Translate(&alpinejs.TranslateProps{Direction: "down"})... }
+			class={
+				"absolute z-10 mt-1 w-56 rounded-lg p-1 shadow-lg bg-white focus:outline-hidden",
+				"border border-gray-400/50",
+			}
+			:class="{
+				'right-0': position === 'left',
+				'left-0': position !== 'left',
+				'bottom-full mb-2': verticalPosition === 'top',
+				'top-full mt-1': verticalPosition === 'bottom'
+			}"
+			role="menu"
+			aria-orientation="vertical"
+			aria-labelledby="dropdown-menu-button"
+			tabindex="-1"
+		>
+			<div class="py-1 bg-white" role="none">
+				for index, item := range props.Items {
+					@renderMenuItem(item, index, 0)
+				}
+			</div>
+		</div>
+	</div>
+}
